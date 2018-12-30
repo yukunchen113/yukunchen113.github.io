@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<style>
+			#link {color: #778899;}
+			nav ul {
+				font-size: 16pt;
+				font-weight: bold;
+			}
+			ul#menu li {
+				display:inline;
+				margin-right: 35px;
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>ESLII Chapter 2 Reference | Yukun Chen</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="ESLII Chapter 2 Reference" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Reference for ESLII Chapter 2 Here is the reference for chapter which includes explanations, and definitions for chapter 2 of The Elements of Statistical Learning." />
+<meta property="og:description" content="Reference for ESLII Chapter 2 Here is the reference for chapter which includes explanations, and definitions for chapter 2 of The Elements of Statistical Learning." />
+<link rel="canonical" href="http://localhost:4000/2018/12/23/ESLII-Chapter-2-Reference.html" />
+<meta property="og:url" content="http://localhost:4000/2018/12/23/ESLII-Chapter-2-Reference.html" />
+<meta property="og:site_name" content="Yukun Chen" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-23T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Reference for ESLII Chapter 2 Here is the reference for chapter which includes explanations, and definitions for chapter 2 of The Elements of Statistical Learning.","@type":"BlogPosting","url":"http://localhost:4000/2018/12/23/ESLII-Chapter-2-Reference.html","headline":"ESLII Chapter 2 Reference","dateModified":"2018-12-23T00:00:00-05:00","datePublished":"2018-12-23T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/12/23/ESLII-Chapter-2-Reference.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link rel="stylesheet" href="/assets/css/style.css?v=2bb3583020c7fa9dbceda0e115411b8534ab380a">
+		<!--[if lt IE 9]>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="wrapper">
+
+			
+			<nav>
+			<ul id="menu">
+				<li><a id="link" href="/">Home</a></li>
+				<li><a id="link" href="/about">About</a></li>
+				<!--<li><a id="link" href="/cv">CV</a></li>-->
+				<li><a id="link" href="/ml">ML</a></li>
+			</ul>
+			</nav>
+
+			<h1 id="reference-for-eslii-chapter-2">Reference for ESLII Chapter 2</h1>
+<p>Here is the reference for chapter which includes explanations, and definitions for chapter 2 of <em>The Elements of Statistical Learning</em>.</p>
+
+<h3 id="affine-set"><a id="affine_set"></a>Affine Set</h3>
+<p>An affine set is a continuous set/space of points, similar to a <a href="#convex_set">convex set</a>, but rather than just including the line segment in between the two point, an affine set includes the points on the line, if both ends of the straight line was extended to infinity. So rather than including the points on just a infinite or finite segment, it includes the points on an infinite line. (convex sets can be infinite as well as finite. Affine sets are only finite.)</p>
+
+<p>Check out <a href="https://www.quora.com/What-the-relationship-between-affine-set-and-convex-set">this Quora answer</a> or <a href="https://math.stackexchange.com/questions/88750/convexity-and-affineness">this stackexchange answer</a> for information on affine vs convex sets.</p>
+
+<h3 id="convex-set"><a id="convex_set"></a>Convex Set</h3>
+<p>A convex set is a region of space, where given any 2 points in that region/set, if we were to draw a straight line segment connecting the two points, every point on that line should be in the convex set as well. This means that regions that look line a “U” are not convex since you can pick out two points (eg. on the tail ends of the U) where the line inbetween is not included in the set.</p>
+
+<p>For more information watch <a href="https://www.youtube.com/watch?v=VcTIOQpRG1o">this youtube video</a>!</p>
+
+<h3 id="how-does-emathbinverty---fxmathbinvert-end-up-being-the-medianyxx"><a id="l1_to_median"></a>How does $E\mathbin{\vert}Y - f(X)\mathbin{\vert}$ end up being the median($Y$|$X=x$)?</h3>
+<p>Lets look at this closely. $Y - f(X)$ is the error of your model.</p>
+
+<p><em>If this error was squared (L2 error)</em>: then larger errors for a point x_l, will be weighted more than smaller errors by a given point x_s. A small shift in $f(x)$ towards the larger error point will reduce the error by much more than a shift of the same amount towards that small error point. This means that the model will be biased towards solving the larger errors first. Which might be what you want, but this also means that outliers could be a huge problem. Also, if you wanted to build a model high in variance, this loss might cause constrain that (Eg. Generative models for art. You wouldn’t want the same art piece to be generated each time.)</p>
+
+<p>However <em>if we used the abolute of this error (L1 error)</em>: then shifts towards larger values will decrease the error by the same amount as shifts towards the smaller values. This will cause us to find some sort of equilibrium at the median of the datapoints, where if you shifted your prediction up, the error of the points below would increase, while the points above would decrease, and vice versa for a shift downwards. This will be much more helpful with regards to outliers.</p>
+
+<p>I highly suggest drawing out a numberline with a few points and finding the minimum absolute error to prove that it will be the median.</p>
+
+<p>check out <a href="https://stats.stackexchange.com/questions/34613/l1-regression-estimates-median-whereas-l2-regression-estimates-mean">this stack exchage answer</a> for more information.</p>
+
+
+			<!--<footer>
+				
+				<p>This project is maintained by <a href="http://github.com/yukunchen113">yukunchen113</a></p>
+				
+				<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+			</footer>-->
+		</div>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {
+		    inlineMath: [['$','$'], ['\\(','\\)']],
+		    processEscapes: true
+		  }
+		});
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+		<script src="/assets/js/scale.fix.js"></script>
+		
+	</body>
+</html>
