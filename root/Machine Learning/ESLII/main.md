@@ -1,7 +1,7 @@
 ---
 layout: default
 title: ESLII
-permalink: /ml/ESLII
+permalink: /ml/ESLII/
 ---
 # Notes on The Elements of Statistical learning 2nd Edition
 Here are my notes on the Elements of Statistical Learning 2nd Edition (ESLII) by Hastie et al. This is a wonderful book, full of many insights in statistical learning, and I hope to add in some of my own insights, clarifications, and questions on the different parts of the book.

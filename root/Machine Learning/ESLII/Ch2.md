@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Ch2
-permalink: /ml/ESLII/Ch2
+permalink: /ml/ESLII/Ch2/
 ---
 # ESLII Chapter 2: Overview of Supervised Learning
 <!-- Introduction/overview of chapter -->
