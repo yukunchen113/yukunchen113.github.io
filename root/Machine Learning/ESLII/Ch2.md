@@ -41,7 +41,9 @@ permalink: /ml/ESLII/Ch2/
 	- for a row to be 0, (causing a singular matrix) a feature must be orthogonal to every feature (including itself!), so this means that the matrix will be singular if all the elements in a feature vector is 0. So across all data points, a feature is always 0.
 - if the mixture of gaussians is not tightly clustered, we can use a random variable to determine which gaussian in the mixture to sample from, then, sample from that gaussian. 
 
-Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available. Implemented with Python and Numpy.
+[Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available.]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code)
+ Implemented with Python and Numpy. Called _gaussian_mixture.py_
+
 
 ### Section 2.3.2: Nearest Neighbor Methods
 - _voronoi tessellation_ or _voronoi diagrams_ are the splitting of space into different regions.
