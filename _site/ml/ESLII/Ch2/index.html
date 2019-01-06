@@ -30,7 +30,7 @@
 {"description":"Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!","@type":"WebPage","url":"http://localhost:4000/ml/ESLII/Ch2/","headline":"Ch2","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-		<link rel="stylesheet" href="/assets/css/style.css?v=3acc7e0424981fceb902e237ca30dd41439861e3">
+		<link rel="stylesheet" href="/assets/css/style.css?v=fd77c5bda7d319fa06f30250d0dd736cd58132ec">
 		<!--[if lt IE 9]>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
 		<![endif]-->
@@ -50,7 +50,7 @@
 
 			<h1 id="eslii-chapter-2-overview-of-supervised-learning">ESLII Chapter 2: Overview of Supervised Learning</h1>
 <!-- Introduction/overview of chapter -->
-
+<h2 id="general-tips-for-chapter-2">General Tips for Chapter 2:</h2>
 <!-- General Tips
 - think simple when looking at equations (N=1)
 - use the dimensions of the matrix to your advantage to see how matricies are being manipulated (p roughly represents the features, N represents the number of data points.)
@@ -58,6 +58,20 @@
 - things marked with An Idea: are not a necessity to understand, and is just there for my own notes, as any new ideas happen.
 - thigh marked with Question: are unanswered questions of mine that are about the content.
 -->
+<h3 id="tip-1-understanding-equations">Tip #1: Understanding Equations</h3>
+<p>When looking at equations, it would help to think simple when analyzing equations for an intuitive sense of whats going on. I like to think of N as being equal to 1 unless otherwise stated (or if there is a reason it can’t be), where you only have one data point. Also, know what assumptions you can make, and how that translates to math, when trying to solve the equations yourself. There are many subtlties in the wording and equations. For example, if you have $XX^T$ vs $X^TX$, <em>why do we use one or the other?</em> Assuming that X is zero centered, and is a vector, then these would both represent variance. $XX^T$ would represent a matrix of how much each of the features covary (covarince matrix scaled by N). If you took the diagonal of this matrix as a vector, then it would represent a elementwise multiplication of the $X$ vector with itself. $X^TX$ on the other hand, represents sum of the total variance across each feature. In otherwords, it is the sum of the diagonal of the $XX^T$ matrix. You can see how, each of these differs in a practical sense. One gives a detailed breakdown of the variances across each feature, and the other gives an overall view of the variance in the system.</p>
+
+<p>Make sure that you know the purpose behind each equation, and each operation. Looking at equations as just numbers, variables and functions is like reading a book by just paying attention to each single word, instead of taking in what the overall story is. Instead, keep in mind what each aspect of an equation represents, and what it means to be doing a certain operation. In the future, this will help you translate theory into math, then further on into effcient algorithms. This doesn’t mean to neglect proving them yourself, proving them yourself will get you familiar with the tools you can use.</p>
+
+<p>One thing that will help with representations, is by looking at an equation vector-wise. In a $Nxp$ matrix $X$, $N$ signifies the datapoints, $p$ signifies the features. Becareful of which part is multiplying which, sometimes, one matters more than the other.</p>
+
+<h3 id="tip-2-other-general-tips">Tip #2: Other General Tips:</h3>
+<ul>
+  <li>Bookmark pg 12 for it’s equations, I found it helpful to look back on this in future chapters. (You don’t want to be deriving it every single time, though you should derive it at least once.)</li>
+  <li>things marked with <em>An Idea:</em> are not a necessity to understand, and is just there for my own notes, as any new ideas happen.</li>
+  <li>things marked with <em>Question:</em> are unanswered questions of mine that are about the content.</li>
+  <li><a href="http://github.com/yukunchen113/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code"><strong>Code is available!</strong></a> This code is for the various parts in the chapter, and each files will be specified below.</li>
+</ul>
 
 <h2 id="chapter-23">Chapter 2.3:</h2>
 
@@ -100,8 +114,7 @@
   <li>if the mixture of gaussians is not tightly clustered, we can use a random variable to determine which gaussian in the mixture to sample from, then, sample from that gaussian.</li>
 </ul>
 
-<p><a href="http://github.com/yukunchen113/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code">Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available.</a>
- Implemented with Python and Numpy. Called <em>gaussian_mixture.py</em></p>
+<p>Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available. Implemented with Python and Numpy. Called <em>gaussian_mixture.py</em></p>
 
 <h3 id="section-232-nearest-neighbor-methods">Section 2.3.2: Nearest Neighbor Methods</h3>
 <ul>
@@ -112,7 +125,7 @@
 </ul>
 
 <h3 id="section-233-from-least-squares-to-nearest-neighbors">Section 2.3.3: From Least Squares to Nearest Neighbors</h3>
-<!-- build this program (pg 16, revealing the oracle) -->
+<p>Code is avaliable for <em>“exposing the oracle!”</em> on pg. 16. Code is available in the Chapter 2 repository above, called, <em>oracle.py</em></p>
 <ul>
   <li>
     <p>Basis expansion is just a transformation on the inputs. Eg. using $X^2$ rather than just $X$</p>
@@ -146,7 +159,8 @@
   </li>
   <li>
     <p>for classification use an L matrix which assigns a loss if a class was missclassified given another.
-<!-- code the optimal bayes decision boundary --></p>
+<!-- code the optimal bayes decision boundary -->
+Code and explanation for the bayes decision boundary is in the chapter 2 repository, which is linked above.</p>
   </li>
   <li>in the last paragraph, they pose the situation where there were 2 classes (these classes should be: item exists, item doesn’t exist) for classification, and used a binary regression Y for this case (Dummy variable Y approach). For k classes we would have $Y_k$, a Y for each class. The reason why we would want to use Y is, now we can apply mean squared error, and minimize that.</li>
   <li>problems might include: the fact that $\hat{f}(x)$ doesn’t have to be positive (regression can also be negative). This is a problem if we wanted each $Y_k$ to be a probability, which can’t be negative.</li>

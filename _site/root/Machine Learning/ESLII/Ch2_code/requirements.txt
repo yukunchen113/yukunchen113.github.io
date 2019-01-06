@@ -1,0 +1,6 @@
+to run these programs without any changes, you'll need:
+
+python3		which is the language I'm using
+numpy		for working with data
+plotly		for graphing. I don't use matplotlib as I ran into trouble graphing multiple surfaces with that, standard 2d plotting is fine though.
+matplotlib	for graphing simple items.

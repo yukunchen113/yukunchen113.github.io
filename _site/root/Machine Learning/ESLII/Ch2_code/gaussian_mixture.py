@@ -202,6 +202,6 @@ def main():
 		j+=1
 		fig.show()
 	input()
-	
+
 if __name__ == "__main__":
 	main()

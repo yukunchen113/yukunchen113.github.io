@@ -5,7 +5,7 @@ permalink: /ml/ESLII/Ch2/
 ---
 # ESLII Chapter 2: Overview of Supervised Learning
 <!-- Introduction/overview of chapter -->
-
+## General Tips for Chapter 2:
 <!-- General Tips
 - think simple when looking at equations (N=1)
 - use the dimensions of the matrix to your advantage to see how matricies are being manipulated (p roughly represents the features, N represents the number of data points.)
@@ -13,6 +13,19 @@ permalink: /ml/ESLII/Ch2/
 - things marked with An Idea: are not a necessity to understand, and is just there for my own notes, as any new ideas happen.
 - thigh marked with Question: are unanswered questions of mine that are about the content.
 -->
+### Tip #1: Understanding Equations
+When looking at equations, it would help to think simple when analyzing equations for an intuitive sense of whats going on. I like to think of N as being equal to 1 unless otherwise stated (or if there is a reason it can't be), where you only have one data point. Also, know what assumptions you can make, and how that translates to math, when trying to solve the equations yourself. There are many subtlties in the wording and equations. For example, if you have $XX^T$ vs $X^TX$, _why do we use one or the other?_ Assuming that X is zero centered, and is a vector, then these would both represent variance. $XX^T$ would represent a matrix of how much each of the features covary (covarince matrix scaled by N). If you took the diagonal of this matrix as a vector, then it would represent a elementwise multiplication of the $X$ vector with itself. $X^TX$ on the other hand, represents sum of the total variance across each feature. In otherwords, it is the sum of the diagonal of the $XX^T$ matrix. You can see how, each of these differs in a practical sense. One gives a detailed breakdown of the variances across each feature, and the other gives an overall view of the variance in the system. 
+
+Make sure that you know the purpose behind each equation, and each operation. Looking at equations as just numbers, variables and functions is like reading a book by just paying attention to each single word, instead of taking in what the overall story is. Instead, keep in mind what each aspect of an equation represents, and what it means to be doing a certain operation. In the future, this will help you translate theory into math, then further on into effcient algorithms. This doesn't mean to neglect proving them yourself, proving them yourself will get you familiar with the tools you can use.
+
+One thing that will help with representations, is by looking at an equation vector-wise. In a $Nxp$ matrix $X$, $N$ signifies the datapoints, $p$ signifies the features. Becareful of which part is multiplying which, sometimes, one matters more than the other. 
+
+### Tip #2: Other General Tips:
+- Bookmark pg 12 for it's equations, I found it helpful to look back on this in future chapters. (You don't want to be deriving it every single time, though you should derive it at least once.)
+- things marked with _An Idea:_ are not a necessity to understand, and is just there for my own notes, as any new ideas happen.
+- things marked with _Question:_ are unanswered questions of mine that are about the content.
+- [__Code is available!__]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code) This code is for the various parts in the chapter, and each files will be specified below.
+
 
 ## Chapter 2.3:
 
@@ -41,8 +54,7 @@ permalink: /ml/ESLII/Ch2/
 	- for a row to be 0, (causing a singular matrix) a feature must be orthogonal to every feature (including itself!), so this means that the matrix will be singular if all the elements in a feature vector is 0. So across all data points, a feature is always 0.
 - if the mixture of gaussians is not tightly clustered, we can use a random variable to determine which gaussian in the mixture to sample from, then, sample from that gaussian. 
 
-[Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available.]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code)
- Implemented with Python and Numpy. Called _gaussian_mixture.py_
+Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available. Implemented with Python and Numpy. Called _gaussian_mixture.py_
 
 
 ### Section 2.3.2: Nearest Neighbor Methods
@@ -52,7 +64,7 @@ permalink: /ml/ESLII/Ch2/
 - kNN is good for scenario 2 as scenario 2 has many small regions. As kNN is inherently regional, it will perform well with scenario 2, given a proper k value, even though it has very noisy boundaries. 
 
 ### Section 2.3.3: From Least Squares to Nearest Neighbors
-<!-- build this program (pg 16, revealing the oracle) -->
+Code is avaliable for _"exposing the oracle!"_ on pg. 16. Code is available in the Chapter 2 repository above, called, _oracle.py_
 - Basis expansion is just a transformation on the inputs. Eg. using $X^2$ rather than just $X$
 
 - Projection pursuit projects your high dimensional data onto a lower dimension, Trying to keep the most informative/interesting parts. Eg. PCA. 
@@ -75,7 +87,8 @@ permalink: /ml/ESLII/Ch2/
 - "robust" in this case means, how much an outlier can affect your model.
 
 - for classification use an L matrix which assigns a loss if a class was missclassified given another.
-<!-- code the optimal bayes decision boundary -->
+
+Code and explanation for the bayes decision boundary is in the chapter 2 repository, which is linked above. It plots both mixture distributions for the oracle, and also plots the decision boundary. The file is called _bayes_decision_boundary.py_
 
 - in the last paragraph, they pose the situation where there were 2 classes (these classes should be: item exists, item doesn't exist) for classification, and used a binary regression Y for this case (Dummy variable Y approach). For k classes we would have $Y_k$, a Y for each class. The reason why we would want to use Y is, now we can apply mean squared error, and minimize that.
 - problems might include: the fact that $\hat{f}(x)$ doesn't have to be positive (regression can also be negative). This is a problem if we wanted each $Y_k$ to be a probability, which can't be negative.
