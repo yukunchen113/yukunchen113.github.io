@@ -24,7 +24,7 @@ One thing that will help with representations, is by looking at an equation vect
 - Bookmark pg 12 for it's equations, I found it helpful to look back on this in future chapters. (You don't want to be deriving it every single time, though you should derive it at least once.)
 - things marked with _An Idea:_ are not a necessity to understand, and is just there for my own notes, as any new ideas happen.
 - things marked with _Question:_ are unanswered questions of mine that are about the content.
-- [__Code is available!__]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code) This code is for the various parts in the chapter, and each files will be specified below.
+- [__Code is available! Click here!__]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code) This code is for the various parts in the chapter, and each files will be specified below.
 
 
 ## Chapter 2.3:
