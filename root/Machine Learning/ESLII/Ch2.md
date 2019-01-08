@@ -103,16 +103,26 @@ Code and explanation for the bayes decision boundary is in the chapter 2 reposit
 - they also mention that the points will converge to the edges. 
 
 - Question: I'm not sure of an intuitive expanation for this. Why will points converge to the edges? There are many weird things that could happen in high dimensions, where a circle inscribed in a square will end up becoming bigger than that square. Why does this happen?
-<!-- program this high dimensionality -->
+	- Answer: 
+		- A basis for an intuition on how to solve this problem, is [here](https://www.youtube.com/watch?v=mceaM2_zQd8). 
+		- However my take on the spheres problem after watching that video, is that rather than the ball becoming "spikey" like he says at the end, I picture that the spheres are floating farther away from each other, when we properly project the bounding spheres back to a lower dimension. 
+		- Here's what I mean; imagine the 3D case, with 8 bounding spheres, and the 2D case with 4 bounding circles. The center sphere in the 3D case is not the same as the one in the 2D case, as it is slightly shifted, and thus has a different radius. 
+		- Even though the 4 circles in the 2D case bound the center sphere by making contact, they do not define the _range/diameter_ of the center sphere anymore. Imagine going from the 2D case to the 3D case. The center sphere is not stuck in the same place.
+		- The bounding spheres that _do_ define the diameter of the sphere are now spheres on the diagonal cross section of the cube. 
+		- So, if were to compare the 2D case with the 3D case, we should use a _correct cross section_ of the 3D case, cut the 3D bounding spheres along a diagonal cross section of the cube. 
+		- If we were to draw this on paper, it would seem that the bounding spheres have a gap inbetween them, and are no longer touching. This is where the extra diameter comes in. There is also a small gap which allows the sphere to be bigger. 
+		- You can also notice how the center sphere grows closer to the boundaries of the box due to the gap. We can imagine if this were to continue in higher dimensions (cutting diagonals, and gaps becoming large/more abundant), We can see how the center sphere will grow to have a radius bigger than the box due to the increase in gaps.
+		- If we were to imagine the bounding spheres as data points, and the center sphere as the test point, we can see how the datapoints drift become comparitively farther as we increase the dimensionality.
 
-- extrapolation happens as it is more likely that your new input will fall on the edges. See [this](https://stats.stackexchange.com/questions/206295/curse-of-dimensionality-why-is-it-a-problem-that-most-points-are-near-the-edge) for more.
+		- The code is available for this. it is called _higher_dimensional_spheres.py_
+
+- extrapolation happens as it is more likely that your new input will fall on the edges. See [this](https://stats.stackexchange.com/questions/206295/curse-of-dimensionality-why-is-it-a-problem-that-most-points-are-near-the-edge) for more. This causes your model to perform worse, usually models are bad at extrapolation.
 
 - problem setup at the bottom of page 23: N =1000 samples along a range of [-1,1] each of the p dimensions. Test our model with at $x_0$ = 0. 
 
 - here is a [proof of (2.25)](https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf). $\hat{y}$ seems to be the best estimation of y you can get, based on the information from X.
 
 - Figure 2.7 has a very good visual of how points get further, if you were to look at the top right corner, where the orange would be the kNN for 1D, and the blue would be the kNN for 2 dimensions. 
-<!-- program this figure 2.7 and 2.8 -->
 
 - our actual answer is in the shape of a hill that peaks at x=0. So if we were to use kNN, we would usually be less than the actual value, and with the increase in dimensions, the points will be increasingly further away.
 
@@ -121,7 +131,6 @@ Code and explanation for the bayes decision boundary is in the chapter 2 reposit
 - the linear model is unbiased (should be a different kind of bias with regards to structural assumptions), as a bias is defined as the difference between the expected value of our prediction and the expected value of the true relationship of X and Y. In our case, the relationship was defined as $Y = X^T\beta + \epsilon$, whereas our linear model is exactly $X^T\beta$. Therefore there is no bias in our linear model.
 
 - [These solutions](https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf) include a solid proof for (2.27) and (2.28), but I wanted to further clarify why you would approach some of the steps. My question is, _How would you even begin to solve this?_ since we want to get the biases and the variances the equation, $y_0-\hat{y_0}$, we should seperate them into mean and variance, this is as simple as subtracting the mean from each term that is a non-determinate variable (variables that have a random component). For example, $x_0^T\beta$ is the average which could be subtracted from $y_0$ and $E_\tau\hat{y_0}$ is the average that could be subtracted from $\hat{y_0}$. So here, we can put these terms in the equation, then factor it. The rest of the work is just a bit of manipulation and substituting the values that we used before, as well as leveraging the assumptions. Also keep in mind that you can leverage the trace function whenever the dimension of solution is 1x1.
-<!-- program to show XTX = NCov(X) -->
 
 - The reason why the blue line has a lower ratio for figure 2.9, is that linear regression's bias is shown with a cubic function.
 
@@ -169,7 +178,6 @@ Code and explanation for the bayes decision boundary is in the chapter 2 reposit
 - remember, that these functions suffer from dimensionality problems.
 
 ### Section 2.8.3: Basis Functions and Dictionary Methods
-<!-- program basis functions -->
 - we can apply a function onto our inputs directly, this will help us if there isn't a directly linear connection between the inputs and outputs. (2.43) is linear even if h(x) is nonlinear, as applying $\theta$ and adding the terms is linear (only doing addtion and multiplication, no sines, squares, etc.). A nonlinear expansion would be if you were to apply a sigmoid after the $\theta$. I think why appling before or after is important, is because we are minimizing with respect to $\theta$, so if a nonlinear function is applied before $\theta$, then the derivative process shouldn't be affected. If we were to apply a function afterwards, then taking the derivative won't be as straight forward.
 - we can make predefined (by us) piecewise polynomial splines locally, that are connected together. (these connections points are called knots)
 - radial basis pick a certain point, using it as center (called the centroid), then expands outwards. For example, the gaussian kernel from before is like this.
@@ -180,7 +188,6 @@ Code and explanation for the bayes decision boundary is in the chapter 2 reposit
 - greedy algorithms are algorithms that are based on the assumption that finding the best, current solution is the best step for the global one. So they will step in the best direction for every step. Though this is not always the case as the previous steps might be correlated/ not independent of each other, where a local best step might not be the optimal step globally. The reason why greedy methods help, is that they allow for tractable calculations to be made. We will see this later on.
 
 ## Chapter 2.9: Model Selection and the Bias-Variance Tradeoff
-<!-- program this bias variance tradeoff effect -->
 - bias variance tradeoff is seems to be the effect of underfitting vs overfitting. Underfitting happens when the model can't model complex data (low model complexity). Overfitting is when the model can model complex data, but this might lead us to memorizing the training set, and thus not being able to learn/represent the underlying principles of the structure of the data. An example of overfitting is 1-nearest-neighbor. 
 
 
