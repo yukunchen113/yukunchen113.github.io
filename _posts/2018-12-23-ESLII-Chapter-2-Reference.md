@@ -25,3 +25,24 @@ However _if we used the abolute of this error (L1 error)_: then shifts towards l
 I highly suggest drawing out a numberline with a few points and finding the minimum absolute error to prove that it will be the median.
 
 check out [this stack exchage answer](https://stats.stackexchange.com/questions/34613/l1-regression-estimates-median-whereas-l2-regression-estimates-mean) for more information.
+
+### <a id="structural_assumptions"></a>Structural Assumptions
+Structural assumptions assumptions made about the global relationship between all x and y. For Example, linear relationship.
+
+We make these assumptions to decrease the amount of data, as you won't need to use the data to determine what the structure is. 
+
+Another reason we make these assumptions, is that our prediction could be more accurate if our assumptions are correct. We will see this later in Chapter 2.5 (Figure 2.7, 2.8)
+
+
+### <a id="voronoi_tessellation"></a>Voronoi Tessellation/Voronoi Diagrams
+There are the splitting of space into different regions, based on distance to the closest point. This is similar to a decision boundary for each point in kNN. [Seeing a picture](https://en.wikipedia.org/wiki/Voronoi_diagram) would help.
+
+
+### <a id="minimizing_pointwise"></a>Minimizing _pointwise_
+Minimizing pointwise means minimizing, given the samples that we have, as opposed to the whole $X$ distribution (which we don't have). So basically, just minimizing over our training set. The effect that this would have on the equations is $X$ becomes $X=x$ where we give it the training set of x.
+
+### <a id="robust"></a>Robustness
+For a model to be "robust" in this case means, how much an outlier can affect your model. We would want to know this as if a single data point can heavily influence our model, we would either need to introduce more datapoints, or do more work to ensure the data is cleaned.
+
+### <a id="curse_of_dimensionality"></a>Curse Of Dimensionality
+The amount of data that we need increases exponentially as the amount of dimensions in the input. As the dimensionality increases, the amount of space that the model has to adjust to increases. Why would we want to increase the dimensionality? Remember that we can see the dimensionality as being more features that we can define our output with, thus, if our training set sufficiently represents the true distribution, we could possibly have features that would decrease the error/uncertainty in our output. (Possibly, since the features might be orthogonal to the output.)

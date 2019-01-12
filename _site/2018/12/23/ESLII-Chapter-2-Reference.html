@@ -32,7 +32,7 @@
 {"description":"Reference for ESLII Chapter 2 Here is the reference for chapter which includes explanations, and definitions for chapter 2 of The Elements of Statistical Learning.","@type":"BlogPosting","url":"http://localhost:4000/2018/12/23/ESLII-Chapter-2-Reference.html","headline":"ESLII Chapter 2 Reference","dateModified":"2018-12-23T00:00:00-05:00","datePublished":"2018-12-23T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/12/23/ESLII-Chapter-2-Reference.html"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-		<link rel="stylesheet" href="/assets/css/style.css?v=fd77c5bda7d319fa06f30250d0dd736cd58132ec">
+		<link rel="stylesheet" href="/assets/css/style.css?v=207ff523677b09e286610117b5808d29858fbf77">
 		<!--[if lt IE 9]>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
 		<![endif]-->
@@ -73,6 +73,25 @@
 <p>I highly suggest drawing out a numberline with a few points and finding the minimum absolute error to prove that it will be the median.</p>
 
 <p>check out <a href="https://stats.stackexchange.com/questions/34613/l1-regression-estimates-median-whereas-l2-regression-estimates-mean">this stack exchage answer</a> for more information.</p>
+
+<h3 id="structural-assumptions"><a id="structural_assumptions"></a>Structural Assumptions</h3>
+<p>Structural assumptions assumptions made about the global relationship between all x and y. For Example, linear relationship.</p>
+
+<p>We make these assumptions to decrease the amount of data, as you won’t need to use the data to determine what the structure is.</p>
+
+<p>Another reason we make these assumptions, is that our prediction could be more accurate if our assumptions are correct. We will see this later in Chapter 2.5 (Figure 2.7, 2.8)</p>
+
+<h3 id="voronoi-tessellationvoronoi-diagrams"><a id="voronoi_tessellation"></a>Voronoi Tessellation/Voronoi Diagrams</h3>
+<p>There are the splitting of space into different regions, based on distance to the closest point. This is similar to a decision boundary for each point in kNN. <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Seeing a picture</a> would help.</p>
+
+<h3 id="minimizing-pointwise"><a id="minimizing_pointwise"></a>Minimizing <em>pointwise</em></h3>
+<p>Minimizing pointwise means minimizing, given the samples that we have, as opposed to the whole $X$ distribution (which we don’t have). So basically, just minimizing over our training set. The effect that this would have on the equations is $X$ becomes $X=x$ where we give it the training set of x.</p>
+
+<h3 id="robustness"><a id="robust"></a>Robustness</h3>
+<p>For a model to be “robust” in this case means, how much an outlier can affect your model. We would want to know this as if a single data point can heavily influence our model, we would either need to introduce more datapoints, or do more work to ensure the data is cleaned.</p>
+
+<h3 id="curse-of-dimensionality"><a id="curse_of_dimensionality"></a>Curse Of Dimensionality</h3>
+<p>The amount of data that we need increases exponentially as the amount of dimensions in the input. As the dimensionality increases, the amount of space that the model has to adjust to increases. Why would we want to increase the dimensionality? Remember that we can see the dimensionality as being more features that we can define our output with, thus, if our training set sufficiently represents the true distribution, we could possibly have features that would decrease the error/uncertainty in our output. (Possibly, since the features might be orthogonal to the output.)</p>
 
 
 			<!--<footer>

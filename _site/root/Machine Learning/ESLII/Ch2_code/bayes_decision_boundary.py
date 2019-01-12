@@ -1,5 +1,5 @@
 """
-This is a program of the bayes decision boundary.
+This is a program of the bayes decision boundary for the oracle.
 
 Here we have information of the underlying distributions that the
 points are sampled from.
@@ -25,82 +25,67 @@ mixture of gaussians, then, it should be a summation of the
 likelihoods of each mixture along a certain dimension.
 
 
+Here, I plot the boundary, and the distributions as well.
+The 3D distribution graph is not perfect, as it is not continuous.
 
 
+HOW TO RUN----
+call in terminal
+press enter to exit the program.
 
 """
-
-
-
-
 import numpy as np 
-import gaussian_mixture as gm
-import math
 import matplotlib.pyplot as plt 
-#3d plot import
-from mpl_toolkits.mplot3d import Axes3D
-
-#transiton to plot.ly
+import oracle as oc
+import math
 import plotly as py 
 import plotly.graph_objs as go 
 
 
+oracle = oc.oracle()
+gaussians = oracle.gaussians
 
+resolution = 100
+x = np.linspace(-3,3,resolution)
+y = np.linspace(-3,3,resolution)
+X, Y = np.meshgrid(x,y)
 
-#generate the means 
-num_samples = 100
-num_means = 10
-ndim = 2
-#2 dimensional mean, one for x, one for y.
-bmeans = np.random.normal([0,1],[1,1],[num_means, ndim]).reshape(num_means, ndim, 1)#blue
-omeans = np.random.normal([1,0],[1,1],[num_means, ndim]).reshape(num_means, ndim, 1)#orange
+norm_func = lambda x, mu, sig: 1/(sig*np.sqrt(2*math.pi))*np.exp(-(x-mu)**2/(2*sig**2))
+comp = lambda xmu,ymu: norm_func(X,xmu,1/5)*norm_func(Y,ymu,1/5)
 
-stddev = np.ones(bmeans.shape)/5
-
-blue_gaussians = np.concatenate((bmeans, stddev), axis =-1)
-orange_gaussians = np.concatenate((omeans, stddev), axis =-1)
-
-plot2=[]
-graph_colour = ["Blues", "Reds"]
-k = 0
-probabilities = []
-for gaussians in [blue_gaussians, orange_gaussians]:
-	#create mixtures and sample from each
-	mix = gm.mixture(num_gaussians=num_means)
-
-	#create set_gaussian dictionary.
-	gaussian_set = {(i,j):list(gaussians[i,j]) for i in range(num_means) for j in range(ndim)}
-
-	mix.set_gaussian(gaussian_set)
-	data = mix.sample(num_samples)
-
-	#plot sample data
-	fig = plt.figure(0)
-	plt.scatter(data[:,0], data[:,1], s =20)
-
-	#plot gaussian surfaces.
-	#construct normals
-	norm_func = lambda x, mu, sig: 1/(sig*np.sqrt(2*math.pi))*np.exp(-(x-mu)**2/(2*sig**2))
-	resolution = 100
-	x = np.linspace(-3,3,resolution)
-	y = np.linspace(-3,3,resolution)
-	X, Y = np.meshgrid(x,y)
-	comp = lambda xmu,ymu: norm_func(X,xmu,1/5)*norm_func(Y,ymu,1/5)
-	Z=0
-	for mu in gaussians[:,:,0]:
+contour = 0
+outputs = {}
+i = 0
+for col, gaussian in gaussians.items():
+	Z = 0
+	for mu in gaussian[:,:,0]:
 		Z=Z+comp(*mu)
-	probabilities.append(Z)
+	outputs[col] = Z
+	if i%2 == 0:
+		contour +=Z 
+	else:
+		contour -=Z
+	i+=1
 
-	#plot
-	plot2.append(go.Surface(z=Z, colorscale=graph_colour[k]))
+#plot probability distributions.
+plot=[]
+graph_colour = ["Blues", "Reds"]
+k=0
+for Z in outputs.values():
+	plot.append(go.Surface(x=X,y=Y,z=Z, colorscale=graph_colour[k]))
 	k+=1
+fig = go.Figure(data=plot)
+py.offline.plot(fig)
 
-#py.offline.plot(plot2)
 
+#plot data and contour
+fig, ax = plt.subplots()
 
-#create boundary
-boundary_threshold = 0.1
-boundary = np.where(probabilities[0] < probabilities[1], 255, 0)
-#plt.contour(X,Y,X+1, cmap=plt.cm.Paired)
+data = oracle.sample()
+for k,v in data.items():
+	plt.scatter(v[:,0], v[:,1], s =20, label= k)
+
+CS = ax.contour(X, Y, contour, levels=[0])
+ax.set_title('Bayes Decision boundary')
 fig.show()
 input()

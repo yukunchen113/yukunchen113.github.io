@@ -30,7 +30,7 @@
 {"description":"Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!","@type":"WebPage","url":"http://localhost:4000/ml/ESLII/Ch2/","headline":"Ch2","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-		<link rel="stylesheet" href="/assets/css/style.css?v=fd77c5bda7d319fa06f30250d0dd736cd58132ec">
+		<link rel="stylesheet" href="/assets/css/style.css?v=207ff523677b09e286610117b5808d29858fbf77">
 		<!--[if lt IE 9]>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
 		<![endif]-->
@@ -51,13 +51,6 @@
 			<h1 id="eslii-chapter-2-overview-of-supervised-learning">ESLII Chapter 2: Overview of Supervised Learning</h1>
 <!-- Introduction/overview of chapter -->
 <h2 id="general-tips-for-chapter-2">General Tips for Chapter 2:</h2>
-<!-- General Tips
-- think simple when looking at equations (N=1)
-- use the dimensions of the matrix to your advantage to see how matricies are being manipulated (p roughly represents the features, N represents the number of data points.)
-- Bookmark pg 2 for it's equations, I found it helpful to look back on this in future chapters. (You don't want to be deriving it every single time)
-- things marked with An Idea: are not a necessity to understand, and is just there for my own notes, as any new ideas happen.
-- thigh marked with Question: are unanswered questions of mine that are about the content.
--->
 <h3 id="tip-1-understanding-equations">Tip #1: Understanding Equations</h3>
 <p>When looking at equations, it would help to think simple when analyzing equations for an intuitive sense of whats going on. I like to think of N as being equal to 1 unless otherwise stated (or if there is a reason it can’t be), where you only have one data point. Also, know what assumptions you can make, and how that translates to math, when trying to solve the equations yourself. There are many subtlties in the wording and equations. For example, if you have $XX^T$ vs $X^TX$, <em>why do we use one or the other?</em> Assuming that X is zero centered, and is a vector, then these would both represent variance. $XX^T$ would represent a matrix of how much each of the features covary (covarince matrix scaled by N). If you took the diagonal of this matrix as a vector, then it would represent a elementwise multiplication of the $X$ vector with itself. $X^TX$ on the other hand, represents sum of the total variance across each feature. In otherwords, it is the sum of the diagonal of the $XX^T$ matrix. You can see how, each of these differs in a practical sense. One gives a detailed breakdown of the variances across each feature, and the other gives an overall view of the variance in the system.</p>
 
@@ -68,235 +61,206 @@
 <h3 id="tip-2-other-general-tips">Tip #2: Other General Tips:</h3>
 <ul>
   <li>Bookmark pg 12 for it’s equations, I found it helpful to look back on this in future chapters. (You don’t want to be deriving it every single time, though you should derive it at least once.)</li>
-  <li>things marked with <em>An Idea:</em> are not a necessity to understand, and is just there for my own notes, as any new ideas happen.</li>
+  <li>things marked with <em>An Idea:</em> are not a necessity to understand, and is just there for my own notes.</li>
   <li>things marked with <em>Question:</em> are unanswered questions of mine that are about the content.</li>
-  <li><a href="http://github.com/yukunchen113/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code"><strong>Code is available!</strong></a> This code is for the various parts in the chapter, and each files will be specified below.</li>
+  <li><a href="http://github.com/yukunchen113/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code"><strong>Code is available! Click here!</strong></a> This code is for the various parts in the chapter, and each files will be specified below.</li>
 </ul>
 
 <h2 id="chapter-23">Chapter 2.3:</h2>
 
 <h3 id="introduction">Introduction</h3>
 
-<p><a id="structural_assumption"></a></p>
-<ul>
-  <li>structural assumptions:
-    <ul>
-      <li>assumptions made about the relationship between all x and y.</li>
-    </ul>
-  </li>
-  <li>
-    <p>linear models assume linearity in the <a href="#structural_assumption">structure</a> of the data, so they might be inaccurate if the data is non linear.</p>
-  </li>
-  <li>kNN does not give any strong assumptions. What does “strong” mean? While linearity assumes that the mapping from X to Y is linear, which is a global assumption. kNN is more of a local assumption that relies heavily on the training data in a local area. But because of this heavy reliance on the training data, with the addition of a new data point, the model can change significantly. This is bad as then we would have to select our training data very carefully.</li>
-</ul>
+<p>what are <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#structural_assumptions">structural assumptions</a>?</p>
+
+<p>linear models assume linearity in the structure of the data, so they might be inaccurate if the data is non linear.</p>
+
+<p>kNN do not make any strong assumptions about the structure of the data, instead, it uses the data to create the structure. What does “strong” mean? While linearity assumes that the mapping from X to Y is linear, which is a global assumption. kNN is more of a local assumption that relies heavily on the training data in a local area. But because of this heavy reliance on the training data, with the addition of a new data point, the model can change significantly. This is bad as we would have to select our training data very carefully, a slight difference could give us a very different outcome.</p>
+
+<p>I think that structure is assumed when you have a model, and your data is used to tune the finite number of parameters in the model. Linear models seem to do this, and kNN don’t. It’s similar using data to fill in the blanks in a partly constructed paragraph vs using data to write a new paragraph. You will need more data if you don’t make structural assumptions, as well as there would be high variance.</p>
 
 <h3 id="section-231-linear-models-and-least-squares">Section 2.3.1: Linear Models and Least Squares</h3>
-<ul>
-  <li>
-    <p>what is an <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#affine_set">affine set</a>?</p>
-  </li>
-  <li>Analysis on the (p+1) dimensional input-output space:
-    <ul>
-      <li>($X, \hat{Y}$) is represented in a p dimensional space, where each dimension is a feature. Remember that $\hat{Y}$ is just a linear combination of the features in $X$, our estimated value.</li>
-      <li>the last dimension of (p+1) dimensions, where p of them are from ($X,\hat{Y}$), represents the combination of the uncertain/unknown components in $Y$ (the actual output). These are the components not represented by the hyperplane/features of $X$. This can be seen as if we include a component $\hat{\beta_0}$ in X, this beta is not an uncertainty anymore, and becomes a component of $X$, rather than a bias for Y.</li>
-      <li>since features are not necessarily orthogonal to each other, though are still used as the basis of the space, the input-output space doesn’t have to be orthogonal.</li>
-    </ul>
-  </li>
-  <li>the small $x_i$ in (2.3) represents a data vector of size p.</li>
-  <li><a href="https://math.vanderbilt.edu/sapirmv/msapir/prtranspose.html">transpose identities</a> help with the proof.</li>
-  <li>for information on matrix differentiation see <a href="https://atmos.washington.edu/~dennis/MatrixCalculus.pdf">this</a>, 5. Matrix Differentiation for identities and their proofs (2.4) -&gt; (2.5).</li>
-  <li>what does it mean for $X^TX$ to be singular? When does this happen?
-    <ul>
-      <li>$X^TX$ represents a matrix whose elements are dot products between each feature vector of size, p. (multiplications between the features in a given datapoint, summed across diffent datapoints), like an uncentered covariance between features.</li>
-      <li>for a row to be 0, (causing a singular matrix) a feature must be orthogonal to every feature (including itself!), so this means that the matrix will be singular if all the elements in a feature vector is 0. So across all data points, a feature is always 0.</li>
-    </ul>
-  </li>
-  <li>if the mixture of gaussians is not tightly clustered, we can use a random variable to determine which gaussian in the mixture to sample from, then, sample from that gaussian.</li>
-</ul>
+<p>what is an <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#affine_set">affine set</a>?</p>
+
+<p>Here are some points about the (p+1) dimensional input-output space:</p>
+
+<p>The set ($X, \hat{Y}$) is represented in a p dimensional space, where each dimension is represents a feature. Remember that our estimated value, $\hat{Y}$ is just a linear combination of the features in $X$, so therefore it has to exist within the space that $X$ represents.</p>
+
+<p>The last dimension of the (p+1) dimensions (the +1 dimension, the other p dimensions are from ($X,\hat{Y}$)) represents the combination of all the uncertain/unknown features in $Y$ (the actual output). This component is not represented by the hyperplane/features of $X$. For example, when we include the $\hat{\beta_0}$ as a component of $X$, $\hat{\beta_0}$ is not part of the uncertainty in $Y$ anymore, and becomes a component of $X$, though there are still other factors that contribute to that uncertainty. I also want to point out that even though the features are not necessarily orthogonal to each other, they are still used as the basis of the space, therefore the input-output space doesn’t have to be orthogonal.</p>
+
+<p>The small $x_i$ in (2.3) represents a data vector of size p.</p>
+
+<p><a href="https://math.vanderbilt.edu/sapirmv/msapir/prtranspose.html">This site talking about transpose properties</a> is good for a quick reference for solving proofs. Though you should definitely work them out your self to see if they make sense. (Just quickly draw a matrix and prove it to yourself)</p>
+
+<p>For information on matrix differentiation see <a href="https://atmos.washington.edu/~dennis/MatrixCalculus.pdf">this great site</a>, <em>section 5. Matrix Differentiation</em> for identities and their proofs (2.4) -&gt; (2.5). If you go through in detain, it gives a very good idea on matrix differentiation. Again, you should also write out the proofs yourself whenever you are slightly unsure (or even when you are sure!).</p>
+
+<p>What does a singular $X^TX$ represent? What does it tell us about our data? $X^TX$ represents a matrix whose elements are dot products between each feature as a p-dimensional vector. Multiplication happens between features within datapoints (feature x in datapoint i multiplies with feature y in datapoint i). This is an uncentered covariance between features, where $X^TX$ represents covariance, but since the features don’t have a mean of 0, it is uncentered. For a row in $X^TX$ to be 0, (causing a singular matrix) a feature must be orthogonal (dot product = 0) to every feature (including itself!), so this means that the matrix will be singular if all the elements in a feature vector is 0. So across all data points, a feature is always 0. (Though I didn’t exhaustively prove this, so don’t quote me on this one!)</p>
+
+<p>If a mixture of gaussians is not tightly clustered, we can use a random variable to determine which component gaussian in the mixture to sample from, then, sample from that gaussian.</p>
 
 <p>Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available. Implemented with Python and Numpy. Called <em>gaussian_mixture.py</em></p>
 
 <h3 id="section-232-nearest-neighbor-methods">Section 2.3.2: Nearest Neighbor Methods</h3>
-<ul>
-  <li><em>voronoi tessellation</em> or <em>voronoi diagrams</em> are the splitting of space into different regions.</li>
-  <li>becareful of overfitting (k=1), use a test set to determine if your model holds up.</li>
-  <li>the <em>effective</em> number of parameter for kNN is $N/k$, which is a rough measure that is proportional to the max number of regions (number of neighborhoods, if the neighborhoods dodn’t overlap)</li>
-  <li>kNN is good for scenario 2 as scenario 2 has many small regions. As kNN is inherently regional, it will perform well with scenario 2, given a proper k value, even though it has very noisy boundaries.</li>
-</ul>
+<p>what are <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#voronoi_tessellation"><em>voronoi tessellation</em> or <em>voronoi diagrams</em></a>?</p>
+
+<p>Becareful of overfitting (k=1), use a test set to determine if your model holds up.</p>
+
+<p>The <em>effective</em> number of parameter for kNN is $N/k$, which is a rough measure that is proportional to the max number of regions (would be the number of neighborhoods, if the neighborhoods didn’t overlap)</p>
+
+<p>kNN is good for scenario 2 as scenario 2 has many small regions. As kNN is inherently regional, it will perform well with scenario 2, given a proper k value, though it will have very noisy boundaries.</p>
 
 <h3 id="section-233-from-least-squares-to-nearest-neighbors">Section 2.3.3: From Least Squares to Nearest Neighbors</h3>
 <p>Code is avaliable for <em>“exposing the oracle!”</em> on pg. 16. Code is available in the Chapter 2 repository above, called, <em>oracle.py</em></p>
-<ul>
-  <li>
-    <p>Basis expansion is just a transformation on the inputs. Eg. using $X^2$ rather than just $X$</p>
-  </li>
-  <li>
-    <p>Projection pursuit projects your high dimensional data onto a lower dimension, Trying to keep the most informative/interesting parts. Eg. PCA.</p>
-  </li>
-</ul>
+
+<p>Basis expansion is a transformation on the inputs, rather than just taking the inputs at face value, and expecting a linear relationship with the output. Eg. using $X^2$ rather than just $X$.</p>
+
+<p>Projection pursuit defines a set of methods projects your high dimensional data onto a lower dimension, trying to keep the most informative/interesting parts. Eg. PCA.</p>
 
 <h2 id="chapter-24-statistical-decision-theory">Chapter 2.4: Statistical Decision Theory</h2>
-<ul>
-  <li><em>minimizing pointwise</em> means, minimizing given the samples that we have, as opposed to the whole X distribution (which we don’t have).</li>
-  <li>we can replace $f(X)$ with $c$ since $f(X)$ is determinate, not a random variable, when conditioned on $X$</li>
-  <li><strong>keep this in mind!</strong> the whole purpose of many machine learning models is to model $E(Y\mathbin{\vert}X=x)$ we will see how the models that we talked about before apply this.</li>
-  <li>$E(Y\mathbin{\vert}X=x)$ is usually the best that you can do. Finding the mean of $Y$ given $X$. This is because you can only look at $Y$ though what you have: the information in $X$. The information needed to predict $Y$ that is not in $X$ becomes noise to your model.</li>
-  <li>kNN approximates $E(Y\mathbin{\vert}X=x)$ with a direct interpretation. The average value of the region around a point, is the value of that point. Remember that $E(Y\mathbin{\vert}X=x)$ you want the average of $Y$ at evaluated at a <em>point $X$</em> rather than a region around the point.</li>
-  <li>
-    <p>As the density of the data increases, and sufficient samples are stacked on any given point such that it could approximate the average, kNN becomes more accurate. Unfortunately, we do not have such large amounts of data. And as the number of features increase, data requirements for kNN grows drastically. Though we would have finer control with more features, the degrees of freedom to control have further increased.</p>
-  </li>
-  <li>in the act of setting/assuming $f(x) \approx x^T\beta$, we have defined a model for our data. (model based approach)</li>
-  <li>
-    <p>Notice how (2.16) is different from (2.6). This is because the value of $f(x)$ is different. Here, $f(x)\approx x^T\beta$ before we saw that $f(x) = X\beta$. (So X here should have column vectors which represents data, N, as opposed to features, p from before.) Also, (2.16) is different in that $X$ represents the whole distribution as it uses $\beta$, rather than just using training set points which $\hat{\beta}$ from (2.6) uses.</p>
-  </li>
-  <li>why does additivity matter? Why does this relate to $E(Y\mathbin{\vert}X=x)$? We will see later on, how additivity represents the different components that make $Y$.</li>
-  <li>
-    <p>augumenting kNN with additivity helps resolve the high dimensional problem. Each kNN can done locally for low dimensons, across all of the dimensions, then summed.</p>
-  </li>
-  <li>why does $E\mathbin{\vert}Y - f(X)\mathbin{\vert}$ end up being the median($Y$|$X=x$)? See it <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#l1_to_median">here</a>.</li>
-  <li>
-    <p>“robust” in this case means, how much an outlier can affect your model.</p>
-  </li>
-  <li>
-    <p>for classification use an L matrix which assigns a loss if a class was missclassified given another.
-<!-- code the optimal bayes decision boundary -->
-Code and explanation for the bayes decision boundary is in the chapter 2 repository, which is linked above.</p>
-  </li>
-  <li>in the last paragraph, they pose the situation where there were 2 classes (these classes should be: item exists, item doesn’t exist) for classification, and used a binary regression Y for this case (Dummy variable Y approach). For k classes we would have $Y_k$, a Y for each class. The reason why we would want to use Y is, now we can apply mean squared error, and minimize that.</li>
-  <li>problems might include: the fact that $\hat{f}(x)$ doesn’t have to be positive (regression can also be negative). This is a problem if we wanted each $Y_k$ to be a probability, which can’t be negative.</li>
-</ul>
+<p>what do you mean by <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#minimizing_pointwise"><em>minimizing pointwise</em></a>?</p>
+
+<p>we can replace $f(X)$ with $c$ since $f(X)$ is determinate, not a random variable, when conditioned on $X$.</p>
+
+<p><strong>Keep this in mind! the whole purpose of many machine learning models is to model $E(Y\mathbin{\vert}X=x)$</strong> we will see how the models that we talked about before apply this.</p>
+
+<p>$E(Y\mathbin{\vert}X=x)$ is usually the best that you can do. Finding the average of a point in $Y$ given a point in $X$ for all $Y$ and $X$. This is because you can only predict at $Y$ with what you have: the information in $X$. The information about $Y$ that is not in $X$ becomes noise to your model.</p>
+
+<p>kNN approximates $E(Y\mathbin{\vert}X=x)$ with a direct interpretation. It takes the average value of the region around a point and assumess that approximates the value of at the point. Remember that $E(Y\mathbin{\vert}X=x)$ you want the average at a point $Y$ at evaluated at a <em>point $X$</em> rather than a region around the point (which is what kNN does).</p>
+
+<p>As the density of the data increases, and sufficient samples are stacked on any given point such that it could approximate the average well enough, kNN becomes more accurate. Unfortunately, we do not have such large amounts of data. And as the number of features increase, data requirements for kNN grows drastically. Though we would have finer control with more features, each feature, which can be seen as degrees of freedom, have further increased.</p>
+
+<p>By setting/assuming $f(x) \approx x^T\beta$, we have defined a model for our data. (model based approach). This is a global structure that we assume will be applicable across all of Y. By constrast, kNN only assumes a local structure, thus allowing the global structure to be controled by the data. I think that it’s similar to a heavy plate armour vs a piece of chainmail. The heavy plate linear regression seems to be defined globally as it’s overall structure is a predefined shape (of a person in the case of heavy armour), though it could adjust due to the parameters (can move arm and legs). The chainmail piece has locally defined structure, (each small loop of the chain) though the overall shape is still flexible, and would require a person wearing it to define the overall shape.</p>
+
+<p>Notice how (2.16) is different from (2.6). This is because the value of $f(x)$ is different. Here, $f(x)\approx x^T\beta$ before we saw that $f(x) = X\beta$. (So X here should have column vectors which represents data N, as opposed to features, p from before.) Also, (2.16) is different in that $X$ represents the whole distribution as it uses $\beta$, rather than just using training set points which $\hat{\beta}$ from (2.6) uses. This means that they’re trying to solve it generally across the wold distribution of $X$</p>
+
+<p>Why does additivity matter? How does this relate/implement to $E(Y\mathbin{\vert}X=x)$? We will see later on, in chapter 3, how additivity represents the different components that make $Y$.</p>
+
+<p>Augumenting kNN with additivity helps to resolve the high dimensional problem. Also we can have each kNN can be done locally for low dimensons, across all of the dimensions, then summed.</p>
+
+<p>why does $E\mathbin{\vert}Y - f(X)\mathbin{\vert}$ end up being the median($Y$|$X=x$)? See it <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#l1_to_median">here</a>.</p>
+
+<p>what does it mean for a model to be <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#robust">robust</a>?</p>
+
+<p>For classification use a loss matrix, which assigns a loss if a class was missclassified given another.</p>
+
+<p>Code and explanation for the bayes decision boundary is in the chapter 2 repository, which is linked above. It plots both mixture distributions for the oracle, and also plots the decision boundary. The file is called <em>bayes_decision_boundary.py</em></p>
+
+<p>In the last paragraph of the section, they pose the situation where there were 2 classes (these classes should be: item exists, item doesn’t exist) for classification, and used a binary regression Y for this case (Dummy variable Y approach). For k classes we would have $Y_k$, a Y for each class. Notice how, we are now using a $Y$ for classification. So now we are doing a regression across each class, where the regression predicts the probability of being that class. Why would we do this? The reason why we would want to use Y is, now we can apply mean squared error to minimize Y, which would make solving our problem easier. There might be some problems with using regression for modeling a probability. problems might include: the fact that $\hat{f}(x)$ doesn’t have to be positive (regression can also be negative). This is a problem if we wanted each $Y_k$ to be a probability, which can’t be negative.</p>
 
 <h2 id="chapter-25-local-methods-in-high-dimensions">Chapter 2.5: Local Methods in High Dimensions</h2>
-<ul>
-  <li>
-    <p><em>curse of dimensionality</em>, the amount of data that we need as the dimensions grows, increases exponentially.</p>
-  </li>
-  <li>how they got $e_p(r) = r^{1/p}$: $r$ is the volume, the volume of a hypercube is $r = e^p$ where p is the number of dimensions, and e is the edge length. r represents our sample data (or neighborhood for kNN) from the true distribution of the total hypercube (in this case it is the unit hypercube). This means that our data will represent a smaller chunk of the total cube as we increase the dimensionality. The statement that they make for kNN where:
-    <blockquote>
-      <p>to capture 1% of the data for a local average, we would need 63% of the range of each input variable.</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>Remember, if we decrease the r, (amount of data captured) our variance would increase.</p>
-  </li>
-  <li>
-    <p>they also mention that the points will converge to the edges.</p>
-  </li>
-  <li>
-    <p>Question: I’m not sure of an intuitive expanation for this. Why will points converge to the edges? There are many weird things that could happen in high dimensions, where a circle inscribed in a square will end up becoming bigger than that square. Why does this happen?
-<!-- program this high dimensionality --></p>
-  </li>
-  <li>
-    <p>extrapolation happens as it is more likely that your new input will fall on the edges. See <a href="https://stats.stackexchange.com/questions/206295/curse-of-dimensionality-why-is-it-a-problem-that-most-points-are-near-the-edge">this</a> for more.</p>
-  </li>
-  <li>
-    <p>problem setup at the bottom of page 23: N =1000 samples along a range of [-1,1] each of the p dimensions. Test our model with at $x_0$ = 0.</p>
-  </li>
-  <li>
-    <p>here is a <a href="https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf">proof of (2.25)</a>. $\hat{y}$ seems to be the best estimation of y you can get, based on the information from X.</p>
-  </li>
-  <li>
-    <p>Figure 2.7 has a very good visual of how points get further, if you were to look at the top right corner, where the orange would be the kNN for 1D, and the blue would be the kNN for 2 dimensions. 
-<!-- program this figure 2.7 and 2.8 --></p>
-  </li>
-  <li>
-    <p>our actual answer is in the shape of a hill that peaks at x=0. So if we were to use kNN, we would usually be less than the actual value, and with the increase in dimensions, the points will be increasingly further away.</p>
-  </li>
-  <li>
-    <p>why does some have high variance and some other functions have high bias? If we were to base this off our idea that the data will converge to the edges as the dimensions increase, we see that for figure 2.7, most data points will be at the bottom of the curve, causing for high bias. This bias is due to the fact that answers will tend to be close to 0, even though the actual test value at x = 0 should be 1. There is inherent bias in the data. Here the variance doesn’t grow as the points converge to a value of 0. Variance for figure 2.8 will grow, as when the data grow towards the edges, the y values could take on 0, or a very high value. This causes high variance in the data, and as our model predictions are highly dependent on the data (kNN) then we will have high variance in our model predictions.</p>
-  </li>
-  <li>
-    <p>the linear model is unbiased (should be a different kind of bias with regards to structural assumptions), as a bias is defined as the difference between the expected value of our prediction and the expected value of the true relationship of X and Y. In our case, the relationship was defined as $Y = X^T\beta + \epsilon$, whereas our linear model is exactly $X^T\beta$. Therefore there is no bias in our linear model.</p>
-  </li>
-  <li>
-    <p><a href="https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf">These solutions</a> include a solid proof for (2.27) and (2.28), but I wanted to further clarify why you would approach some of the steps. My question is, <em>How would you even begin to solve this?</em> since we want to get the biases and the variances the equation, $y_0-\hat{y_0}$, we should seperate them into mean and variance, this is as simple as subtracting the mean from each term that is a non-determinate variable (variables that have a random component). For example, $x_0^T\beta$ is the average which could be subtracted from $y_0$ and $E_\tau\hat{y_0}$ is the average that could be subtracted from $\hat{y_0}$. So here, we can put these terms in the equation, then factor it. The rest of the work is just a bit of manipulation and substituting the values that we used before, as well as leveraging the assumptions. Also keep in mind that you can leverage the trace function whenever the dimension of solution is 1x1.
-<!-- program to show XTX = NCov(X) --></p>
-  </li>
-  <li>The reason why the blue line has a lower ratio for figure 2.9, is that linear regression’s bias is shown with a cubic function.</li>
-</ul>
+<p>what is the <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#curse_of_dimensionality"><em>curse of dimensionality</em></a>?</p>
+
+<p>How they got $e_p(r) = r^{1/p}$: $r$ is the volume, the volume of a hypercube is $r = e^p$ where p is the number of dimensions, and e is the edge length of the sample. r represents our sample data (or we can might also see it as a neighborhood for kNN) from the true distribution of the total hypercube (in this case it is the unit hypercube). This equation means that our data will represent a smaller chunk of the total cube as we increase the dimensionality (What happens to edge, as we represent the same r in higher dimensions? Keep r constant, increase p, see what happens to e). The example they use to show how data hungry higher dimensions are for kNN:</p>
+<blockquote>
+  <p>to capture 1% of the data for a local average, we would need 63% of the range of each input variable.</p>
+</blockquote>
+
+<p>Remember, if we decrease the r, (amount of data captured) our variance (error term, $\epsilon$) would increase.</p>
+
+<p>They also mention that the data points will converge to the edges as we further increase the dimensionality.</p>
+
+<p><strong>Question</strong>: I’m not sure of an intuitive expanation for either the increase in volume for dimensionality, or the fact that data goes to the edges. Why does this happen?</p>
+
+<dl>
+	<dt>__Answer__:</dt>
+	<dd>
+
+	A basis for an intuition on the problem and how to solve it, is 
+
+	<a href="https://www.youtube.com/watch?v=mceaM2_zQd8">
+
+	presented by Numberphile</a>. I will be piggybacking off the problem setup and give my own take on the solution.<br /><br />
+
+	Rather than the ball becoming "spikey" like he says at the end, I picture that the bounding spheres are becoming farther away from each other as dimensionality increases when projecting the bounding spheres back to a lower dimension. Here's what I mean; imagine the 3D case, with 8 bounding spheres, and the 2D case with 4 bounding circles. The center sphere in the 3D case is not the same as the one in the 2D case, even if you were to expand the 2D case to 3 dimensions. They have a different centerpoint, and they touch the bounding sphere in a different way. Even though the 4 bounding circles in the 2D case "bound" the center sphere by making contact, in the 3D case, they do not define the <em>range/diameter</em> of the center sphere anymore. Defining diameter is what I call bounding. Again, imagine going from the 2D case to the 3D case. The you can see that the center sphere is not stuck in the same place. The bounding spheres that _do_ define the diameter of the sphere are now spheres on a slanted diagonal cross section of the cube. If we want the the same kind of bounding (bounding = diameter definition) for the 3D case to be transfered back down to the 2D case, we need to cut the 3D bounding spheres along a diagonal, slanted cross section of the cube. (see code for a visual). <br /><br />
+
+	If we were to draw this new cross section on paper, it would seem that the bounding spheres now have a gap in between them, and the spheres are no longer touching. This is where the extra bit of diameter comes in. The small gap also allows parts of the center sphere to be close to the edges of the cube. We can imagine if this were to continue in higher dimensions (cutting diagonals, and gaps becoming larger/more abundant), We can see how the center sphere will grow to have a radius bigger than the box due to the increase in gaps.<br /><br />
+
+	Connecting this back to our dimensional problem, if we were to imagine the bounding spheres as data points, with the center sphere as the test point, we can see how the datapoints drift become comparitively farther as we increase the dimensionality.<br /><br />
+
+	There is code is available for visualizing this. it is called <em>higher_dimensional_spheres.py</em>.
+
+</dd>
+
+</dl>
+
+<p>Extrapolation happens as it is more likely that your new input will fall on the edges. See <a href="https://stats.stackexchange.com/questions/206295/curse-of-dimensionality-why-is-it-a-problem-that-most-points-are-near-the-edge">this</a> for more. This causes your model to perform worse, usually models are bad at extrapolation.</p>
+
+<p>Problem setup at the bottom of page 23: N = 1000 samples along a range of [-1,1] each of the p dimensions. Test our model with at $x_0$ = 0.</p>
+
+<p>Here is a <a href="https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf">proof of (2.25)</a>. $\hat{y}$ seems to be the best estimation of y you can get, based on the information from X.</p>
+
+<p>Figure 2.7 has a very good visual of how points get further, if you were to look at the top right corner, where the orange would be the kNN for 1D, and the blue would be the kNN for 2 dimensions. This gives a clear look on how adding more feaures would cause the distance to our test point to increase as dimensionality does. It’s a simple intuitive way.</p>
+
+<p>Our actual answer is in the shape of a hill that peaks at x=0 for figure 2.7. So if we were to use kNN, we would usually get a prediction that is less than the actual value (remember that we are evaluating at x = 0), and with the increase in dimensions, the points will get increasingly further away, thus increasing this gap between the actual and predicted values.</p>
+
+<p>Why does some models have high variance and some other functions have high bias? If we were to think about the idea that the data will converge to the edges as the dimensions increase, we see that for figure 2.7, most data points will be at the bottom of the curve, causing for high bias (predicted is always less than actual, however, the data points themselves are quite close to each other, and thus shows little variance). Our predicted values for this high bias case will tend to be close to 0, even though the actual test value at x = 0 should be 1. We see that here, there is inherent bias in the data, the variance doesn’t grow as the points converge to a value of 0. However, variance for figure 2.8 will grow, as when the data for figure 2.8 grows towards the edges, the y values would take on 0, or a very high value. This causes high variance in the data, and as our model predictions are highly dependent on the data (assuming that we are using kNN) then we will have high variance in our model predictions, but low bias, as the expected values of the predicted and actual would be similar to each other.</p>
+
+<p>The linear model is unbiased (This is a different kind of bias than the one with regards to structural assumptions), as a bias is defined as the difference between the expected value of our prediction and the expected value of the true relationship of X and Y. In our case, the relationship was defined as $Y = X^T\beta + \epsilon$, whereas our linear model is exactly $X^T\beta$. Therefore there is no bias in our linear model. Practically, this means that if we have domain knowledge, where we know that our assumptions were proven, we should incorporate that domain knowledge.</p>
+
+<p><a href="https://waxworksmath.com/Authors/G_M/Hastie/WriteUp/Weatherwax_Epstein_Hastie_Solution_Manual.pdf">These solutions</a> include a solid proof for (2.27) and (2.28), but I wanted to further clarify why you would approach some of the steps. My question is, <em>How would you even begin to solve this?</em> since we want to get the biases and the variances the equation, $y_0-\hat{y_0}$, we should seperate them into mean and variance, this is as simple as subtracting the mean from each term that is a non-determinate variable (variables that have a random component). For example, $x_0^T\beta$ is the average which could be subtracted from $y_0$ and $E_\tau\hat{y_0}$ is the average that could be subtracted from $\hat{y_0}$. So here, we can put these terms in the equation, then factor it. The rest of the work is just a bit of manipulation and substituting the values that we used before, as well as leveraging the assumptions. Also keep in mind that you can leverage the trace function whenever the dimension of solution is 1x1.</p>
+
+<p>The reason why the blue line has a lower ratio for figure 2.9, is the model for the blue line is a cubic, and the actual equation is cubic.</p>
 
 <h2 id="chapter-26-statistical-models-supervised-learning-and-function-approximation">Chapter 2.6: Statistical Models, Supervised Learning and Function Approximation</h2>
-<ul>
-  <li>how to overcome dimensionality by incorporating leveraging known, special structure within the data.</li>
-</ul>
+<p>How to overcome dimensionality by incorporating/leveraging known, special structure within the data.</p>
 
 <h3 id="section-261-a-statistical-model-for-the-joint-distribution-prxy">Section 2.6.1: A Statistical Model for the Joint Distribution Pr(X,Y)</h3>
-<ul>
-  <li>$\epsilon$ is assumed to represent all the information about Y that we don’t take into account with X. What if this is not the case? What if the variance in Y is not independent of X?</li>
-  <li>Before, we were only finding the mean of Y through $E(Y|X)$. If the error is known to be dependent on X, then we can leverage this information as well. We can use $Var(Y|X)$.</li>
-  <li>this is usefull for classification which normally aims to model a distribution over each class.</li>
-</ul>
+<p>$\epsilon$ is assumed to represent all the information about Y that we don’t take into account with X. What if this is not the case? What if the variance in Y is not independent of the data in X? That the information X contains can satisfy Y’s uncertainty? Before, we were only finding the mean of Y using $E(Y|X)$. If the error is also known to be dependent on X, then we can leverage this information as well. We can use $Var(Y|X)$ to represent the error. Now that we have variance, this is useful for classification, which normally aims to model a distribution over each class.</p>
 
 <h3 id="section-262-supervised-learning">Section 2.6.2: Supervised Learning</h3>
-<ul>
-  <li>Learning by example: using the $y$ from your training data to correct your current prediciton.</li>
-</ul>
+<p>Learning passively by example/with a teacher: using the $y$ from your training data to correct your current prediciton. Learing passively because we are feeding in the data and it doesn’t have control over what data will be fed in next.</p>
 
 <h3 id="section-263-function-approximation">Section 2.6.3: Function Approximation</h3>
-<ul>
-  <li>Function approximation uses a mathematical/statistical approach, rather than biological/human reasoning approach.</li>
-  <li>approximators are your model of $Y|X$: your $f(x)$.</li>
-  <li>
-    <p>we saw before that building domain knowledge/assumptions we know about our data could decrease the error, and scale better in higher dimensional spaces. Though it is not limited to this use, we can uses linear basis expansions on our features (applying a linear/nonlinear function on them) as a way to implement domain knowledge.</p>
-  </li>
-  <li>The equation for cross entropy seems off (2.36).</li>
-  <li>for an intuitive sense of cross entropy which is measure of similarity between two distributions, usually a modelled distribution and the true distribution, see <a href="https://www.youtube.com/watch?v=ErfnhcEV1O8">here</a></li>
-</ul>
+<p>Function approximation uses a mathematical/statistical approach on machine learning, rather than biological/human reasoning approach like neural networks.</p>
+
+<p>Approximators are your model of $Y|X$: your $f(x)$.</p>
+
+<p>We saw before that building domain knowledge/assumptions we know about our data could decrease the error, and scale better in higher dimensional spaces. We can use linear basis expansions on our features (applying a linear/nonlinear function on them) as a way to implement domain knowledge.</p>
+
+<p>The equation for cross entropy seems off (2.36), it is different from the one shown in the video below. Why can we use either one?
+For an intuitive sense of cross entropy, which is measure of similarity between two distributions, (usually a modelled distribution and the true distribution), see <a href="https://www.youtube.com/watch?v=ErfnhcEV1O8">here</a></p>
 
 <h2 id="chapter-27-structured-regression-models">Chapter 2.7: Structured Regression Models</h2>
-<ul>
-  <li>Structured models allow us to leverage any known structure in the data.</li>
-</ul>
+<p>Structured models allow us to leverage known structure in the data.</p>
 
 <h3 id="section-271-difficulty-of-the-problem">Section 2.7.1: Difficulty of the Problem</h3>
-<ul>
-  <li>with a limited training sample set, there could be many different functions for a model that fit across the sample set to a similar degree of accuracy. Restricting the amount of different functions that the model can take will help the model decide on what function to represent. However, we need to choose the restriction carefully, as it should be applicable to our data.</li>
-  <li>a type of constraints/restriction that we might impose is the assumption that in small neighborhoods of the data, the behavior/outputs would be similar. This means that in a local area, we can approximately use a constant, linear or a low order polynomial to fit it. The smaller our neighborhoods are, the more complex our model could be.</li>
-  <li>rather than specifying the neighborhood, we can give a metric to our model, which can then decide for themselves what a neighborhood should be. We can also have our model adaptively find this. This helps with dimensionality issues, as it is similar to defining a global structure, and will help with dimensionality issues.</li>
-  <li>This means that naively defining neighborhoods will cause dimensonality issues. (what if your neighborhood is not large enough to capture the entire area of similar behavior? Then we will need more data to compensate.) (I think that this will be explained more in detail in the future.)</li>
-</ul>
+<p>With a limited training set, there could be many different functions that could fit across it, with to a similar degree of accuracy on the set. Restricting the amount of different functions that the model can be, will help the model decide on what function to represent. However, we need to choose these restrictions carefully, as they should be representative of our data.</p>
+
+<p>A type of constraint/restriction that we might impose is the assumption that small neighborhoods of the data would behave simiarly, producing similar outputs. This means that in a local area, we can approximately use a constant linear or a low order polynomial to fit it. The smaller our neighborhoods are, the more complex representations our model could be.</p>
+
+<p>Also, rather than specifying exactly the neighborhood, we can give a metric to our model, letting the models decide for themselves how big a neighborhood should be. Our model can adaptively find this. This will help with dimensionality issues, as it is similar to defining a more global structure to the model.</p>
+
+<p>This means that naively defining small, neighborhoods will cause dimensonality issues. For example, what if your neighborhood is not large enough to capture the an area of similar behavior? We will be uselessly representing a common area with more neighborhoods than necessary. We will need more data to compensate. I think that this will be explained more in detail in the future.</p>
 
 <h2 id="chapter-28-classes-of-restricted-estimators">Chapter 2.8: Classes of Restricted Estimators</h2>
-<ul>
-  <li>non parametric is a type of model, where the data will supply the structure, rather than using builtin assumptions.</li>
-</ul>
+<p>Non parametric is a type of model where the data will supply the structure/define the model. This means that there are an infinite number of parameters to model.</p>
 
 <h3 id="section-281-roughness-penalty-and-bayesian-methods">Section 2.8.1: Roughness Penalty and Bayesian Methods</h3>
-<ul>
-  <li>we can carry information between close neighvorhoods, so that local regions don’t vary too much. cubic smoothing spline is a spline (interpolation between points) that takes into account second derivative information, which signifies how much the function changes it’s overall direction.</li>
-  <li>This penalizes how deviant a function is from a straight line.</li>
-  <li>the penalty is a prior since it imposes a prior belief about the system. In the spline case, it assumes that there is a degree of smoothness in the optimal structure of the model.</li>
-</ul>
+<p>We can carry information across close neighborhoods, so that local regions don’t vary too much. An example technique that we can apply is the cubic smoothing spline, which is a spline (interpolation between points) that takes into account second derivative information. Second derivative shows how much the function changes it’s overall direction, if we add this to the loss function we will penalize how deviant the function is from a straight line.</p>
+
+<p>The penalty imposes a prior belief about the system which we have onto the system. In the spline case, it assumes that there is a degree of smoothness in the optimal structure of the model.</p>
 
 <h3 id="section-282-kernel-methods-and-local-regression">Section 2.8.2: Kernel Methods and Local Regression</h3>
-<ul>
-  <li>Methods that fit data locally.</li>
-  <li>Kernels are functions that provide a weight to each of the local points in a neighborhod.</li>
-  <li>Nadaraya-Watson weighted average takes into account the surrounding $y_i$, not only the current data point $y_i$.</li>
-  <li>$f_{\hat{\theta}}(x_i)$ is the local regression, but our overall goal with this local estimate, is to minimize the global estimate. Just as how we use a sample set (training set) to try to minimize across the whole set.</li>
-  <li>remember, that these functions suffer from dimensionality problems.</li>
-</ul>
+<p>Kernel metheds are methods that fit data locally. Kernels are functions that provide a weight to each of the local points in a neighborhood. They focus on a point as the center, and apply a function to the points around the center point, using the distance to the center point. For example, the Nadaraya-Watson weighted average takes into account the surrounding points $y_i$, not only the current data point $y_0$, the effect of the $y_i$ decrease as you get further away from the center point.</p>
+
+<p>$f_{\hat{\theta}}(x_i)$ is the local regression. Remember that our overall goal with minimizing this local estimate, is to minimize the global estimate. Just as how we use a sample set (training set) to try to minimize across the whole set, we assume that minimizing the local structure will also be minimizing the global structure.</p>
+
+<p>However, remember that these local functions suffer from dimensionality problems.</p>
 
 <h3 id="section-283-basis-functions-and-dictionary-methods">Section 2.8.3: Basis Functions and Dictionary Methods</h3>
-<!-- program basis functions -->
-<ul>
-  <li>we can apply a function onto our inputs directly, this will help us if there isn’t a directly linear connection between the inputs and outputs. (2.43) is linear even if h(x) is nonlinear, as applying $\theta$ and adding the terms is linear (only doing addtion and multiplication, no sines, squares, etc.). A nonlinear expansion would be if you were to apply a sigmoid after the $\theta$. I think why appling before or after is important, is because we are minimizing with respect to $\theta$, so if a nonlinear function is applied before $\theta$, then the derivative process shouldn’t be affected. If we were to apply a function afterwards, then taking the derivative won’t be as straight forward.</li>
-  <li>we can make predefined (by us) piecewise polynomial splines locally, that are connected together. (these connections points are called knots)</li>
-  <li>radial basis pick a certain point, using it as center (called the centroid), then expands outwards. For example, the gaussian kernel from before is like this.</li>
-  <li>it would be nice if we have an adaptive knot/centroid placement/best basis type based on the data. Choosing the best basis type is called, dictionary method, which contains a dictionary of different basis function methods and chooses the best one.
-    <ul>
-      <li>An Idea: are not a necessity to understand, and is just there for my own notes, as any new ideas happen.</li>
-      <li>thigh marked with Question: are unanswered questions of mine that are about the content.: It might be accurate if we provide a way of disentanglement for the performance/traits of different basis, used for categorization of different basis for a task. These features could be evaluated based on using a well crafted test dataset to evaluate new basis functions. Maybe, this might lead to the syntesis of new basis functions methods. This will help with accuracy and search speed, as searching for methods by category of their properties would be efficent, being both a direct way to show correlation between the data and the category, as well as being an interpretable/explainability method.</li>
-    </ul>
-  </li>
-  <li>greedy algorithms are algorithms that are based on the assumption that finding the best, current solution is the best step for the global one. So they will step in the best direction for every step. Though this is not always the case as the previous steps might be correlated/ not independent of each other, where a local best step might not be the optimal step globally. The reason why greedy methods help, is that they allow for tractable calculations to be made. We will see this later on.</li>
-</ul>
+<p>We can apply a function on our inputs directly and feed that into the model, this will help us if the output doesn’t have a directly linear connection with the inputs. Notice how (2.43) is defined as linear even if h(x) can be nonlinear. A linear expansion is defined as such when the $\theta$’s are linear. A nonlinear expansion would be if you were to apply a sigmoid after the $\theta$s. What’s the difference between appling the nonlinearity before or after? Remember that we are minimizing with respect to $\theta$, so if a nonlinear function is applied before applying $\theta$ (2.43), then the derivative process shouldn’t be affected as we are deriving with respect to $\theta$. Otherwise, when applying the non linearity afterwards, taking the derivative won’t be as straight forward.</p>
+
+<p>We can make predefined piecewise polynomial splines in local areas and connect them together. The connections points between two splines are called knots</p>
+
+<p>Radial basis pick a certain point, using it as center (called the centroid), then expands outwards. For example, the gaussian kernel from before (Nadaraya-Watson) is like this.</p>
+
+<p>It would be nice if we have an adaptive knot/centroid placement/best basis type based on the data. Choosing the best basis type for each neighborhood is called a dictionary method. Where you would have a dictionary of different basis function methods, and the model chooses the best one.</p>
+
+<p>An Idea: It might be accurate if we provide a way of disentanglement for the performance/traits of different basis, used for categorization of different basis for a task. These features could be evaluated based on using a well crafted test dataset to evaluate new basis functions. Maybe, this might lead to the syntesis of new basis functions methods. This will help with accuracy and search speed, as searching for methods by category of their properties would be efficent, being both a direct way to show correlation between the data and the category, as well as being an interpretable/explainability method.</p>
+
+<p>Greedy algorithms are algorithms based on the assumption that finding the current best solution is also the best step for the global one. So they will step in the best direction for every step. Though this is not always the case as the previous steps might be correlated/ not independent of each other, where a local best step might not be the optimal step globally. The reason why greedy methods help, is that they allow for tractable calculations to be made. We will see this later on.</p>
 
 <h2 id="chapter-29-model-selection-and-the-bias-variance-tradeoff">Chapter 2.9: Model Selection and the Bias-Variance Tradeoff</h2>
-<!-- program this bias variance tradeoff effect -->
-<ul>
-  <li>bias variance tradeoff is seems to be the effect of underfitting vs overfitting. Underfitting happens when the model can’t model complex data (low model complexity). Overfitting is when the model can model complex data, but this might lead us to memorizing the training set, and thus not being able to learn/represent the underlying principles of the structure of the data. An example of overfitting is 1-nearest-neighbor.</li>
-</ul>
+<p>Bias variance tradeoff is seems to be the effect of underfitting vs overfitting. Underfitting happens when the model can’t model complex data (low model complexity). Overfitting is when the model can model complex data, but this might lead us to memorizing the training set, and thus not being able to learn/represent the underlying principles of the structure of the data. An example of overfitting is 1-nearest-neighbor.</p>
 
 
 
