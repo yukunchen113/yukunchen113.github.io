@@ -10,7 +10,6 @@ My name is Yukun.  <br/>
 I'll be posting explanations of projects,  
 and various notes that I find useful and interesting! 
 
-Please also check out my projects as well.
 <br/>
 <br/>
 I'll be posting my process as I learn new things. 
