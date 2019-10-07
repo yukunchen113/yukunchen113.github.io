@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<style>
+			#link {color: #778899;}
+			nav ul {
+				font-size: 16pt;
+				font-weight: bold;
+			}
+			ul#menu li {
+				display:inline;
+				margin-right: 35px;
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Ch4 | Yukun Chen</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Ch4" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!" />
+<meta property="og:description" content="Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!" />
+<link rel="canonical" href="http://localhost:4000/ml/ESLII/Ch4/" />
+<meta property="og:url" content="http://localhost:4000/ml/ESLII/Ch4/" />
+<meta property="og:site_name" content="Yukun Chen" />
+<script type="application/ld+json">
+{"description":"Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!","@type":"WebPage","url":"http://localhost:4000/ml/ESLII/Ch4/","headline":"Ch4","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link rel="stylesheet" href="/assets/css/style.css?v=0cdb7027f069e2f72c9709809b6738e82c662c88">
+		<!--[if lt IE 9]>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="wrapper">
+
+			
+			<nav>
+			<ul id="menu">
+				<li><a id="link" href="/">Home</a></li>
+				<li><a id="link" href="/about">About</a></li>
+				<!--<li><a id="link" href="/cv">CV</a></li>-->
+				<li><a id="link" href="/ml">ML</a></li>
+			</ul>
+			</nav>
+
+			<h1 id="eslii-chapter-4-linear-methods-for-classification">ESLII Chapter 4: Linear Methods for Classification</h1>
+<h2 id="general-tips-for-chapter-4">General Tips for Chapter 4:</h2>
+<h3 id="tip-1-understanding-equations">Tip #1: Understanding Equations</h3>
+<p>When looking at equations, it would help to think simple when analyzing equations for an intuitive sense of whats going on. I like to think of N as being equal to 1 unless otherwise stated (or if there is a reason it can’t be), where you only have one data point. Also, know what assumptions you can make, and how that translates to math, when trying to solve the equations yourself. There are many subtlties in the wording and equations. For example, if you have $XX^T$ vs $X^TX$, <em>why do we use one or the other?</em> Assuming that X is zero centered, and is a vector, then these would both represent variance. $XX^T$ would represent a matrix of how much each of the features covary (covarince matrix scaled by N). If you took the diagonal of this matrix as a vector, then it would represent a elementwise multiplication of the $X$ vector with itself. $X^TX$ on the other hand, represents sum of the total variance across each feature. In otherwords, it is the sum of the diagonal of the $XX^T$ matrix. You can see how, each of these differs in a practical sense. One gives a detailed breakdown of the variances across each feature, and the other gives an overall view of the variance in the system.</p>
+
+<p>Make sure that you know the purpose behind each equation, and each operation. Looking at equations as just numbers, variables and functions is like reading a book by just paying attention to each single word, instead of taking in what the overall story is. Instead, keep in mind what each aspect of an equation represents, and what it means to be doing a certain operation. In the future, this will help you translate theory into math, then further on into effcient algorithms. This doesn’t mean to neglect proving them yourself, proving them yourself will get you familiar with the tools you can use.</p>
+
+<p>One thing that will help with representations, is by looking at an equation vector-wise. In a $Nxp$ matrix $X$, $N$ signifies the datapoints, $p$ signifies the features. Becareful of which part is multiplying which, sometimes, one matters more than the other.</p>
+
+<h3 id="tip-2-other-general-tips">Tip #2: Other General Tips:</h3>
+<ul>
+  <li>things marked with <em>An Idea:</em> are not a necessity to understand, and is just there for my own notes.</li>
+  <li>things marked with <em>Question:</em> are unanswered questions of mine that are about the content.</li>
+  <li><strong><a href="http://github.com/yukunchen113/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch4_code">Code is available! Click here!</a></strong> This code is for the various parts in the chapter, and each file will be specified below.</li>
+</ul>
+
+<h2 id="chapter-41">Chapter 4.1</h2>
+<p>Main Difference:</p>
+<ul>
+  <li>now we predictor, $G(x)$ takes in discrete values</li>
+</ul>
+
+<p>We now divide the input space into regions of the same label, separated by decision boundaries. Decision boundaries is where the prediction of for the ith class equals the prediction for the jth class. $i \neq j, i,j \in 1..K$ where K is the total number of classes</p>
+
+<h4 id="methods-for-finding-linear-decision-boundaries">Methods for finding linear decision boundaries:</h4>
+<p>using linear regression (Ch. 2):</p>
+<ul>
+  <li>use k classes in y, which will be a k-sized vector.</li>
+  <li>see the {x:} equation near the bottom of the page. This shows the decision boundary between the classifications is a hyperplane. This makes sense, as if we take the 2D case of classification, the decision boundary between 2 classes is a line.</li>
+  <li>discriminant functions, $\delta_k (x)$ are the predictor functions for each class. We chose the largest value.</li>
+  <li>if the predictors are linear in x, why would the decision boundary be as well?
+    <ul>
+      <li>being linear in x represents a linear relationship with the inputs, to create the decision boundaries, we just subtract two of these, which is still a linear operation. Therefore, the decision boundaries are still linear in x.</li>
+    </ul>
+  </li>
+  <li>why is a linear combination of monotonic transformation of the predictors sufficient for the decision boundary to be linear?
+    <ul>
+      <li>This should have something to do with the decision boundary being a hyperplane in the input space.
+        <ul>
+          <li>It exists in the input space, so is not affect by what we do to the predictors, as long as the transformation of the predictors is monotonic. This means a monotonic transformation in the inputs will have the same effect as the predictors normally.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>for equations 4.1 we see a sigmoid equation which will map the inputs to be between 0 and 1. The equations are just flip of each other. We do this to make the linear equation a probability</p>
+  </li>
+  <li>to get equation 4.2, we just applied a log on each of the probabilities in 4.1, and found the difference between them. This should be equated to 0.
+    <ul>
+      <li>how does this equation connect with <em>linear discriminant analysis</em> and <em>logistic regression</em>?</li>
+      <li>here we are using only one predictor to predict the class, the decision boundary would be f(x)=0.5</li>
+    </ul>
+  </li>
+  <li>
+    <p>we can create an p dimensional normal representing the component of space orthogonal to the hyperplane, to represent the hyper plane. As well as a cutpoint (a point where the hyperplane converges to a single point, which if remove, will separate the hyperplane into 2.)</p>
+  </li>
+  <li>we can change the qualities of the decision boundary by changing our input basis functions.
+    <ul>
+      <li>For example, if we include the squares of the input columns, then the decision boundary will be quadratic.</li>
+      <li>this will also cause the feature space to be larger than p, due to the added basis.
+<!-- Program this--></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="chapter-42-linear-regression-of-an-indicator-matrix">Chapter 4.2: Linear Regression of an Indicator Matrix</h2>
+<ul>
+  <li>Now we are separating the classes. Y is now an NxK indicator response matrix, where for each datapoint, there are K elements, one for each class.
+    <ul>
+      <li>Each of the N rows in Y is a one hot vector, where the 1 represents the activated class. $\hat{\beta}$, which was a K-dimensional vector before, is now a (p+1)xK dimensional matrix, <strong>$\hat{B}$</strong>. X has (p+1) columns with p features, and a 1 as the first column as the bias.</li>
+      <li>the class is the largest index for this prediciton.</li>
+    </ul>
+  </li>
+  <li>The equation on page 104 is to say that the expected value of $Y_x$ given X = x is supposed to approximate/be equal to the probability of G = k given X = x. So since linear regression aims to estimate the conditional expectation, $E(Y_k|X = x)$, we can see linear regression as an indirect estimator of the probability. Whether this is a resonable assumption or not remains to be seen.</li>
+  <li>
+    <p>the probability is over the column vector. Which means that those of the same class have their own distribution. Though it remains to be seen if they are independent.</p>
+  </li>
+  <li>how good is linear regresson for classification/constructing the indicator matrix?
+    <ul>
+      <li>In fact, linear regression is rigid, and can allow the estimator to be greater than 1 or negative, both which violate the rules for probability.</li>
+      <li>however, this doesn’t mean that linear regression won’t be able to be used as a classifier, on some problems, they actually give similar results to other linear methods. I believe that this is because rather than a probability, linear regression will act more like a likelihood.</li>
+    </ul>
+  </li>
+  <li>
+    <p>(4.5) is using least squares, where the targets are one hot vectors where element k is 1, and the rest are 0, k being the correct class.</p>
+  </li>
+  <li>
+    <p>(4.6) is just trying to find the corresponding target that is the minimum to the given prediction. A formal definition for what we were describing above.</p>
+  </li>
+  <li>what the first bullet point on page 104 is trying to say, is that we can rearrange the elements in (4.6) and the answer will remain the same. This is because the elements don’t depend on eachother at that point in time. There is no positional reliance anymore.</li>
+  <li>we can also see that the 4.6 is the same as 4.4. This is because 4.5 caused the responses to be minimized. (So there wouldn’t be any response vectors where each element is very large.)</li>
+</ul>
+
+
+
+			<!--<footer>
+				
+				<p>This project is maintained by <a href="http://github.com/yukunchen113">yukunchen113</a></p>
+				
+				<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+			</footer>-->
+		</div>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {
+		    inlineMath: [['$','$'], ['\\(','\\)']],
+		    processEscapes: true
+		  }
+		});
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+		<script src="/assets/js/scale.fix.js"></script>
+		
+	</body>
+</html>

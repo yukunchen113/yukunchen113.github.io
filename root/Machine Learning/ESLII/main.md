@@ -15,4 +15,6 @@ To get a good intuitive foundation of Linear algebra, I highly recomment [3blue1
 ## Content:
 I hope that you will enjoy, and if there is anything that you disagree with, want to give your own insights to, or if there are things that you believe are important that I didn't address, please let me know! There are may subtleties in the wording that contain many insights, and I'm sure that there are ones that I didn't catch.
 
-### [Chapter 2: Overview of Supervised Learning](/ml/ESLII/Ch2)
+### [Chapter 2: Overview of Supervised Learning](/ml/ESLII/Ch2/)
+
+### [Chapter 3: Linear Methods for Regression](/ml/ESLII/Ch3/)

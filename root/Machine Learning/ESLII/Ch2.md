@@ -17,10 +17,10 @@ One thing that will help with representations, is by looking at an equation vect
 - Bookmark pg 12 for it's equations, I found it helpful to look back on this in future chapters. (You don't want to be deriving it every single time, though you should derive it at least once.)
 - things marked with _An Idea:_ are not a necessity to understand, and is just there for my own notes.
 - things marked with _Question:_ are unanswered questions of mine that are about the content.
-- [__Code is available! Click here!__]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code) This code is for the various parts in the chapter, and each files will be specified below.
+- __[Code is available! Click here!]({{ site.github.owner_url }}/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch2_code)__ This code is for the various parts in the chapter, and each file will be specified below.
 
 
-## Chapter 2.3:
+## Chapter 2.3: Two Simple Approaches to Prediction
 
 ### Introduction
 
@@ -116,7 +116,7 @@ __Question__: I'm not sure of an intuitive expanation for either the increase in
 
 
 <dl>
-	<dt>__Answer__:</dt>
+	<dt>Answer:</dt>
 	<dd>
 
 	A basis for an intuition on the problem and how to solve it, is 
@@ -219,6 +219,3 @@ Greedy algorithms are algorithms based on the assumption that finding the curren
 
 ## Chapter 2.9: Model Selection and the Bias-Variance Tradeoff
 Bias variance tradeoff is seems to be the effect of underfitting vs overfitting. Underfitting happens when the model can't model complex data (low model complexity). Overfitting is when the model can model complex data, but this might lead us to memorizing the training set, and thus not being able to learn/represent the underlying principles of the structure of the data. An example of overfitting is 1-nearest-neighbor. 
-
-
- 

@@ -8,7 +8,10 @@ title: Home
 My name is Yukun.  <br/>
 <br/>
 I'll be posting explanations of projects,  
-and various notes that I find useful and interesting!  <br/>
+and various notes that I find useful and interesting! 
+
+Please also check out my projects as well.
+<br/>
 <br/>
 I'll be posting my process as I learn new things. 
 So, if you see anything that catches your attention,
@@ -20,7 +23,10 @@ disentanglement and the recombination of disentangled
 representations fascinating. I hope to be doing work on 
 this soon. I believe that finding proper representations
 of your data is what will lead to efficient and scalable
-continual learning, and interpretability.  <br/>
+continual learning, and interpretability. Specifically, I like to think about how we can model the world/the way we think.
 <br/>
-I am also interested in *Robotics/Mechatronics*, specifically
-towards embedded software, and FPGAs.  <br/>
+<br/>
+I am also interested in *Robotics/Mechatronics*, specifically towards embedded software, and FPGAs.
+
+For more about me, check out my _About_ page!
+<br/>

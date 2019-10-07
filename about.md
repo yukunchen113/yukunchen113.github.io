@@ -3,6 +3,11 @@ layout: default
 title: About
 permalink: /about/
 ---
+# About Me:
+I am a final year Mechatronics Engineering student at McMaster University. My program is on the software side of Mechatronics, at almost 80% software.
+
+I also have an interest in Machine learning. Currently I am looking at disentangling of latent representations. I have focused on unsupervised methods currently, using variational autoencoders. However, in [this paper](https://arxiv.org/pdf/1812.02230.pdf), it is mentioned that we should move from a passive learning style to an active one.
+
 # About This Site:
 Currently, its pretty empty here. <br>
 ## Plans:

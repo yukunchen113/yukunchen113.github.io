@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<style>
+			#link {color: #778899;}
+			nav ul {
+				font-size: 16pt;
+				font-weight: bold;
+			}
+			ul#menu li {
+				display:inline;
+				margin-right: 35px;
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Ch3 | Yukun Chen</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Ch3" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!" />
+<meta property="og:description" content="Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!" />
+<link rel="canonical" href="http://localhost:4000/ml/ESLII/Ch3/" />
+<meta property="og:url" content="http://localhost:4000/ml/ESLII/Ch3/" />
+<meta property="og:site_name" content="Yukun Chen" />
+<script type="application/ld+json">
+{"description":"Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!","@type":"WebPage","url":"http://localhost:4000/ml/ESLII/Ch3/","headline":"Ch3","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link rel="stylesheet" href="/assets/css/style.css?v=0cdb7027f069e2f72c9709809b6738e82c662c88">
+		<!--[if lt IE 9]>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="wrapper">
+
+			
+			<nav>
+			<ul id="menu">
+				<li><a id="link" href="/">Home</a></li>
+				<li><a id="link" href="/about">About</a></li>
+				<!--<li><a id="link" href="/cv">CV</a></li>-->
+				<li><a id="link" href="/ml">ML</a></li>
+			</ul>
+			</nav>
+
+			<h1 id="eslii-chapter-3-linear-methods-for-regression">ESLII Chapter 3: Linear Methods for Regression</h1>
+<h2 id="general-tips-for-chapter-3">General Tips for Chapter 3:</h2>
+<h3 id="tip-1-understanding-equations">Tip #1: Understanding Equations</h3>
+<p>When looking at equations, it would help to think simple when analyzing equations for an intuitive sense of whats going on. I like to think of N as being equal to 1 unless otherwise stated (or if there is a reason it can’t be), where you only have one data point. Also, know what assumptions you can make, and how that translates to math, when trying to solve the equations yourself. There are many subtlties in the wording and equations. For example, if you have $XX^T$ vs $X^TX$, <em>why do we use one or the other?</em> Assuming that X is zero centered, and is a vector, then these would both represent variance. $XX^T$ would represent a matrix of how much each of the features covary (covarince matrix scaled by N). If you took the diagonal of this matrix as a vector, then it would represent a elementwise multiplication of the $X$ vector with itself. $X^TX$ on the other hand, represents sum of the total variance across each feature. In otherwords, it is the sum of the diagonal of the $XX^T$ matrix. You can see how, each of these differs in a practical sense. One gives a detailed breakdown of the variances across each feature, and the other gives an overall view of the variance in the system.</p>
+
+<p>Make sure that you know the purpose behind each equation, and each operation. Looking at equations as just numbers, variables and functions is like reading a book by just paying attention to each single word, instead of taking in what the overall story is. Instead, keep in mind what each aspect of an equation represents, and what it means to be doing a certain operation. In the future, this will help you translate theory into math, then further on into effcient algorithms. This doesn’t mean to neglect proving them yourself, proving them yourself will get you familiar with the tools you can use.</p>
+
+<p>One thing that will help with representations, is by looking at an equation vector-wise. In a $Nxp$ matrix $X$, $N$ signifies the datapoints, $p$ signifies the features. Becareful of which part is multiplying which, sometimes, one matters more than the other.</p>
+
+<h3 id="tip-2-other-general-tips">Tip #2: Other General Tips:</h3>
+<ul>
+  <li>things marked with <em>An Idea:</em> are not a necessity to understand, and is just there for my own notes.</li>
+  <li>things marked with <em>Question:</em> are unanswered questions of mine that are about the content.</li>
+  <li><strong><a href="http://github.com/yukunchen113/yukunchen113.github.io/tree/master/root/Machine%20Learning/ESLII/Ch3_code">Code is available! Click here!</a></strong> This code is for the various parts in the chapter, and each file will be specified below.</li>
+</ul>
+
+<h2 id="chapter-31">Chapter 3.1</h2>
+<p>What does <em><a href="/2019/01/16/ESLII-Chapter-3-Reference.html#linear_in_inputs">“E(Y|X)  linear in the inputs”</a></em> mean?</p>
+
+<p>Assuming that Y and X have a linear relationship is a direct way to find if they are proportional/correlated. Since this method is simple, and gets the job done to a sufficent degree for many tasks, it is used often.</p>
+
+<p>Since we are making such heavy structural assumptions, which leaves few degrees of freedom that the data has to tune, this model uses less data than non linear models.</p>
+
+<h2 id="chapter-32-linear-regression-models-and-least-squares">Chapter 3.2 Linear Regression Models and Least Squares</h2>
+<h3 id="introduction">Introduction</h3>
+<p>X might not be purely data. It can also be a transformation of your data.</p>
+
+<p>why is (3.2) reasonable only on the assumption that the data is independent, random draws?</p>
+<ul>
+  <li>Independent means that the current data drawn isn’t affected by any of the previous data drawn, and won’t affect any of the next pieces of data drawn. If your data was correlated in this way, the dataset that you have might be biased, depending on the way of how you sampled your data. This will cause your model to be slightly worse as your model will be good at predicting the more biased towards the way you draw your data. 
+-If your data wasn’t selected randomly, then of course, the true distribution won’t be well represented.</li>
+  <li>Equation (3.2) is dependent on your data, and is a direct way to form your model towards your data. It doen’t build in any assumptions (which could be done though constraints). This means that you want your data to skewed, otherwise, (3.2) won’t bea able to help.</li>
+  <li>Your model is trying to model a distribution between the relationship from X to Y. If this distribution was moving/changing given the previous input, (3.2) as a loss function won’t be able to minimize it,</li>
+</ul>
+
+<p>The why is it the criterion still valid if the the data is not random and independent? Why does the $y_i$’s have to be conditionally independent given the x?</p>
+<ul>
+  <li>Even though your dataset won’t be as complete in some areas of the data, it would still be able to predict an approximately correct Y given X in the parts where the data is complete. The relationship between X and Y is not affected, only the samples.</li>
+  <li>The keyword here is <em>valid</em>. The model is still valid, though is not statistically reasonable.</li>
+  <li>for example, lets say you wanted to measure the temperature of water over time, which is a bunch of data points that you gather. However, your measuring equipement begins to heat up the longer that you use it, causing the water to heat up inadvertently. This means that your data will be skewed as time passes, and your model is wrong.</li>
+</ul>
+
+<p>Here is a very interesting observation. Notice figure 3.2, and how it makes sense. We are using $X$ to construct $\hat{Y}$. $\hat{Y}$ is literally using the $X$ as components. $\hat{Y} = X\hat{\beta}$. But how can be think of this a projection?</p>
+<ul>
+  <li>notice how the equation to calculate the $\hat{\beta}$ is $X(X^TX)^{-1}y$ If we imagine the X and y as vectors, this is <em>exactly</em> the equation for projection! Wen we are constructing the $\hat{\beta}$, we are projecting Y onto the space of X. The representation of this new, projected Y (Known as $\hat{Y}$) inside the X space, is the $\hat{\beta}$. The $\hat{\beta}$ are the sizes of the component basis in the X space to construct the $\hat{Y}$.</li>
+  <li>Now why is this significant? Well, now we know that how linear/additive models estimate E(Y|X)! They project Y into a space that could be represented by X, and the each of the terms in the additive model are components of this space. After projecting each data point, the resulting components are averaged. This resulting average is what approximates E(Y|X).</li>
+  <li>We can see that since we are representing Y in our “observable” space (observable through X) which is the best we can get from the data, where is the assumptions coming in to play?
+    <ul>
+      <li>The assumptions is that Y can be <em>linearly</em> projected onto the space of X. There might be a non linear transformation, but we have made the assumption that it is a linear one.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>This is an interesting problem that will be addressed later, so keep it in mind. If the features are not all linearly independent with one another, Then some of the $\hat{\beta}$ will not be unique. This means that we will not have a unique solution for our training data. This is a problem as some solutions might generalize better than others, and we would like to have the best one.</p>
+
+<p>When deriving some of these equations, we will assume linearity. This is done by letting $y = X\beta +\epsilon$</p>
+
+<p>To get the variance under (3.8):</p>
+<ul>
+  <li>We can think of $\hat{sigma}^2$ as the variance across one dimension of y. (Each dimension of y is a data point)</li>
+  <li>First, we should see that the error, $\epsilon = y-\hat{y}$
+    <ul>
+      <li>$y = X\beta +\epsilon$, and $\hat{y} = X\hat{\beta}$.</li>
+      <li>$\hat{\beta}=\beta$ because of our assumption, $E(Y|X) = X\beta$
+        <ul>
+          <li>$E(\hat{\beta})=(X^TX)X^Ty=(X^TX)X^TX\beta=\beta$</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>$E(\epsilon^2) = \sigma^2$</li>
+  <li>We should also notice that $\hat{y}$ exists in p+1 dimensions as it is constructed from the input space, and is the p+1 dimensional part of y. y is a N dimensional vector. This means the residual which exists in the space that is orthogonal to $\hat{y}$ is a N-(p+1) = N-p-1 dimensional space.</li>
+  <li>Naturally, we divide the sum by N-p-1 to make it unbiased. (each unknown dimension will uniformly contribute to the variance.)</li>
+</ul>
+
+<p>What is the point of finding these? Remember that we are trying to find out the properties of $\hat{$\beta}$. We needed to estimate $\sigma$ since it was in our equation of variance for $\hat{$\beta}$</p>
+
+<p>(N-p-1)$\hat{\sigma}$ is sampled from a chi-squared distribution, as we are naturally adding together the dimensions across $y-\hat{y}$, where the distribution across each of these N-p-1 dimensions is normally distributed. (chi-squared is a distribution of a sum of normals.)</p>
+
+<p>Why is $\hat{\beta}$ is statistically independent with $\hat{\sigma}$? $\hat{\beta}$ exists in the X space of p+1 dimensions, and $\hat{\sigma}$ exists in the orthogonal space of N-p-1 dimensions.</p>
+
+<p>What is the point of finding the distribution of $\hat{\beta}$? We can now do hypothesis tests and confidence intervals to evaluate our $\hat{\beta_j}$.</p>
+
+<p>We want to test $\hat{\beta_j}$ to see if it is 0. This way, we will know if the corresponding input is correlated/contribute to the output.</p>
+
+<p>For (3.12), $v_j$ represents the standard deviation of the jth feature vector. (3.12) is just using the variance that we have calculated above, elementwise.
+<!--code this whole process with an example--></p>
+
+<h3 id="321-example-prostate-cancer">3.2.1 Example: Prostate Cancer</h3>
+<!--code this whole process with an example-->
+
+<h3 id="322-the-gauss-markov-theorem">3.2.2 The Gauss-Markov Theorem</h3>
+<p>Remember that least squares, the linear regression model that we were using is unbiased, as the expected value of the true $y$ is equal to our estimated $\hat{y}$. The bias we are talking about is a mathematical bias. Here, we assume that $y = X\beta$, which corresponds with model. However notice how we are only putting an assumption on the structure of the data. There are many other methods on how we can build in assumptions. For example, we can also assume/bias towards certain kinds of weights, or we can make assumptions on the size of our models. Why would we want to do this? We want to make up for our lack of trainning data through assumptions. This means that we would like to decrease the variance of our model. Methods on how to do will be explained further down. For now we will see how, even though least squares is the unbiased linear estimator with the smallest variance, this variance might still be too high, and we would need to add new, biased methods to compensate.</p>
+
+<p>The gauss markov theorem shows how least squares is has the smallest variance across all unbiased linear estimators.</p>
+
+<!-- should do a study on how much non linear relationships affect linear models.-->
+<!-- Prove triangle inequality 3.19 later.-->
+<p>For (3.20), they use <a href="https://towardsdatascience.com/mse-and-bias-variance-decomposition-77449dd2ff55">bias variance decomposition</a> for estimators, Since we are using estimators, we can assume that the true $\theta$ is constant, as we are just estimating given our current data.</p>
+
+<p>for (3.22), we are now dealing with a predictor, which means that we would have to factor in the error of the true model as well now.</p>
+
+<h3 id="323-multiple-regression-from-simple-univariate-regression">3.2.3 Multiple Regression from Simple Univariate Regression</h3>
+<ul>
+  <li>Multiple linear regression deals with the number of features being greater than 1. (p &gt; 1)</li>
+  <li>
+    <p>for the univariate case, (3.24) does make sense, work it out using the sizes of the matrices.</p>
+  </li>
+  <li>
+    <p>notice something for (3.26). Remember the equation for projection. This is the exact equation for projection. Regression and projection are the same! As mentioned before. Now the words regress and project will be used interchangably.</p>
+  </li>
+  <li>
+    <p>Though remember, the features that represent our input space (which we use to construct the estimate) might not be orthogonal to each other. This means that the changes in some inputs might affect the $\hat{\beta}$ for other inputs, which might cause some instability. Remember that we are working with just the training set, and instability might hurt generalization.</p>
+  </li>
+  <li>
+    <p>(3.27) is considering p=1, where the inputs is centered. This is done to orthogonalize the x from the initial $x_0 = 1$. The residual, z represents the new information that $x_i$ brings in, as we have ortogonalized z with respect to the previous x. The amount of information that the input space contains does not change. The basis is just orthogonal now.</p>
+  </li>
+  <li>the x in (3.27) is a N-dimensional vector representing N different datapoints.</li>
+</ul>
+
+<!-- program this ortogonalization-->
+<ul>
+  <li>why is the regression coefficient of $z_p$ equal to the coefficient on $x_p$?
+    <ul>
+      <li>Well, we see that solely $x_p$ contains the information of $z_p$. This means that to include this new information to predict y, we will need the coefficient that corresponds to $z_p$.</li>
+      <li>But, won’t the part of $x_p$ which is correlated with the rest of the $x_i$ affect the estimate of y?
+        <ul>
+          <li>Yes, but if we standardize each of the features, then the effect will be small.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The last sentence on page 54, is trying to say that it doesn’t matter how we rearrage our $x_i$, given that we redo the process of regressing. If we have the jth column of x be the last coefficient, then we would need to regress that $x_j$ on all the other $x_i$ that came before it.</li>
+</ul>
+
+
+
+			<!--<footer>
+				
+				<p>This project is maintained by <a href="http://github.com/yukunchen113">yukunchen113</a></p>
+				
+				<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+			</footer>-->
+		</div>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {
+		    inlineMath: [['$','$'], ['\\(','\\)']],
+		    processEscapes: true
+		  }
+		});
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+		<script src="/assets/js/scale.fix.js"></script>
+		
+	</body>
+</html>
