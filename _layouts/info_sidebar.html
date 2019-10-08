@@ -34,6 +34,24 @@
 
 				<p>{{ site.description | default: site.github.project_tagline }}</p>
 
+				<!-- Sidebar -->
+				<section>
+				<nav>
+				<ul id="menu">
+					<li><a id="link" href="/">Home</a></li>
+					<li><a id="link" href="/about">About</a></li>
+					<li><a id="link" href="/exp">Experience</a></li>
+					<li><a id="link" href="/projects">Projects</a></li>
+					<li><a id="link" href="/ml">ML</a></li>
+				</ul>
+				</nav>
+
+				{{ content }}
+
+				</section>
+				<!-- Sidebar -->
+
+
 				{% if site.github.is_project_page %}
 				<p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
 				{% endif %}
