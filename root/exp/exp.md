@@ -5,6 +5,26 @@ permalink: /exp/
 ---
 # MDA Corporation (Software Student Intern)
 
-
 ## Machine Learning for Canadarm2 Mission Planning
-At MDA, I worked on a project to accelerate Canadarm2 mission planning. Current mission planning operations require running many time-consuming, physics-based, time-series simulations of Canadarm2 dynamics. These simulations allow us to identify suitable translational and rotational rates to maneuver the robotic arm, given various payloads. Under these rates and arm conditions, we have to make sure the forces and moments the arm undergoes meet an established safety criteria. I created and designed machine learning model testbeds and data pipelines to aid this process. Along with some data preparation, these models predict time histories of the load acting on the arm, given the payload mass properties and rate commands. This gives us accurate estimates of the optimal rate, in a fraction of the time it typically takes using current methods. This is the first project to use deep learning models to aid in mission planning, and will also be a demonstration to show the potential of using deep learning methods in future programs, reducing the costs and turnaround time of the simulation results without compromising the quality of results.
+
+### Machine Learning Group, MDA Brampton
+- Part of AI group at MDA brampton
+- In free time, created pitch to director of engineering for the use of ML in company projects.
+- Evaluated applications with AI group and created a detailed literature review of current state of the art
+- Created presentations to be used in pitch
+
+### Deep Learning for Canadarm2 Mission Analysis
+- Created the first deep learning project to accelerate Canadarm2 mission planning.
+
+#### Problem Tackled
+- Current worst-case mission planning operations require running many time-consuming, simulations of Canadarm2 dynamics with various payloads to identify suitable speeds to maneuver the robotic arm 
+
+#### Results of Successful Project
+- Models predicts accurate estimates of the optimal rate to move the arm, given mass properties and arm commands.
+- Predicted reduction in mission analysis time from 2-3 weeks down to 1-2 days.
+- This is the first project to use deep learning models to aid in mission planning, and will also be a demonstration to show the potential of using deep learning methods in future programs
+
+### Dragonfly NASA Tipping Point Project
+- Worked with mechanical, electrical, controls, and software engineers on the end effector of the robotic arm for the NASA tipping point Dragonfly project, an on-orbit satellite self-assembly project. 
+- Communicated to setup electrical testbed and wrote scripts to test if the end effector met the mechanical   requirements. 
+- Proposed the methods learned to project manager, for a similar, separate project.
