@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<style>
+			#link {color: #778899;}
+			nav ul {
+				font-size: 16pt;
+				font-weight: bold;
+			}
+			ul#menu li {
+				display:inline;
+				margin-right: 35px;
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Variational Autoencoder | Yukun Chen</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Variational Autoencoder" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Variational Autoencoder About this Project Here is a simple implementation of a VAE using tensorflow." />
+<meta property="og:description" content="Variational Autoencoder About this Project Here is a simple implementation of a VAE using tensorflow." />
+<link rel="canonical" href="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" />
+<meta property="og:url" content="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" />
+<meta property="og:site_name" content="Yukun Chen" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-03T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Variational Autoencoder About this Project Here is a simple implementation of a VAE using tensorflow.","@type":"BlogPosting","url":"http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html","headline":"Variational Autoencoder","dateModified":"2019-03-03T00:00:00-05:00","datePublished":"2019-03-03T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link rel="stylesheet" href="/assets/css/style.css?v=018149f8643eb6a9b5848e2c69ce8df9be002d1e">
+		<!--[if lt IE 9]>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="wrapper">
+
+			
+			<nav>
+			<ul id="menu">
+				<li><a id="link" href="/">Home</a></li>
+				<li><a id="link" href="/about">About</a></li>
+				<li><a id="link" href="/exp">Experience</a></li>
+				<li><a id="link" href="/projects">Projects</a></li>
+				<li><a id="link" href="/ml">ML</a></li>
+			</ul>
+			</nav>
+
+			<h1 id="variational-autoencoder">Variational Autoencoder</h1>
+<h2 id="about-this-project">About this Project</h2>
+<p>Here is a simple implementation of a VAE using tensorflow.</p>
+
+<p>The parameters to be tuned can be accessed in params.py. Analysis below used these parameters.</p>
+
+<p>The purpose of this repository is to learn and test an understanding of VAES. Please see the <em>VAE background</em> section, this will get us an understanding of VAEs, which we can then test. See the <em>Analysis</em> section for an analysis of the VAE.</p>
+
+<h2 id="vae-background">VAE background</h2>
+<h3 id="resources">Resources</h3>
+<p>These are great resources for VAEs:</p>
+<ul>
+  <li>Original Paper: <a href="https://arxiv.org/abs/1312.6114">Auto-Encoding Variational Bayes</a></li>
+  <li>Explanation: <a href="https://arxiv.org/abs/1606.05908">Tutorial on Variational Autoencoders</a></li>
+</ul>
+
+<h3 id="theory">Theory</h3>
+<h4 id="what-is-a-latent-space">What is a latent space?</h4>
+<p>This is the representation defined by the bottleneck layer of the network. This representation is called the latent representation, which is used to generate the observable data, X.</p>
+
+<p>The latent space is just the continuous set of all these latent representations.</p>
+
+<h4 id="how-does-vaes-construct-a-latent-space">How does VAEs construct a latent space?</h4>
+<p>Here is the problem: Train on a single point won’t give good results for the points around that point. If we were to just deterministically backprop the difference (as is what happens with a normal autoencoder), we might not get good results when sampling the parts of the space that aren’t training data representations.</p>
+
+<p>To solve this, we should train a region around X for a given point X. Using the information in X to shape a region in space. Using many of these X will allow us to create our space. The region between two training points will be an interpolation between the two points.</p>
+
+<p>Another desireable of our space is if we can cause a small region in our space to generate the desired data, as we get further from this region, generation of X becomes more unlikely. This will allow us to use the information within the data efficiently.</p>
+
+<p>How do we implement this solution? We will have our latent representation be a distribution instead of a deterministic point or a dirac delta. When training, we can update the parameters in this distribution.</p>
+
+<p>How do we choose a distribution? The standard distribution to choose would be the normal distribution (this is what the paper uses). No matter what the image distribution is (for a given X), our encoder neural network should be able to map the distribution to a normal, (this is our prior). See Figure 2 in <a href="https://arxiv.org/abs/1606.05908">Tutorial on Variational Autoencoders</a>. We can represent the bottleneck layer as a distribution by calculating the mean and standard deviation.</p>
+
+<p>Prevent the distribution from collapsing to a point! Even if we set up our network to be able to represent a probabilistic latent representation, there is nothing preventing the network from setting the standard deviation to zero. Nothing in our objective accounts for the space between training samples. We need to constrain our latent representation distribution. This is where the KL divergence regularization term comes in. We will constrain it be close to our prior. We try to minimize the KL divergence between the prior (which is an isotropic normal) an our calculated distribution. By doing this we have also forced the images generated to be anchored to the same distribution/region of space (centered around 0), which is what we also desired.</p>
+
+<h3 id="implementation-tricks">Implementation Tricks</h3>
+<p>reparameterization trick:</p>
+<ul>
+  <li>What is it?
+    <ul>
+      <li>We won’t be able to backprop through a random variable. This means that we won’t be able to update the inference model, as our latent representation will be a random variable.</li>
+      <li>The reparameterization trick aims to solve this by separating the deterministic part and the random part. We can have mean and standard deviation be deterministic, where we can back propogate through, and have a noise term which get mulitplied to the standard deviation, which will cause this to be random.</li>
+    </ul>
+  </li>
+  <li>How to code it? We need to constrain our standard deviation to be positive, since our KL loss depends on that. We can either apply a softplus to the stddev, or we can allow it to be negative and say that the network is calculating the natural log of the stddev, which is what this project does.</li>
+</ul>
+
+<h2 id="analysis">Analysis:</h2>
+<h3 id="ae-vs-vae">AE vs VAE</h3>
+<p>To first test out our theory, lets look at the difference between an autoencoder and a Variational Auto Encoder.</p>
+
+<p>It should be easy to switch between the two of them, if we were to just leave out the KL divergence term, we will only be fitting the training data, with dirac deltas, as we are setting X=f(X) (which defines a single point, X). This means that we can expect very good reconstruction, but very poor generation. VAEs will have equal, or worse reconstruction than this, as they are optimizing for a region in space. So, our VAE loss will be bounded by our AE loss. After a bit of testing, we can see that our AE loss is 0.004 (MSE).</p>
+
+<h3 id="problem-with-the-learned-representations">Problem with the learned representations.</h3>
+
+<p>When converting our network from a AE to a VAE, we start to see a problem. The KLD loss becomes 0! This causes the posterior distribution to be equal to the prior, which will generate the same image every time!</p>
+
+<p><img src="/assets/vae_images/MSE_0.jpg" alt="Mean Squared Error and KL Loss" /></p>
+
+<p>The loss for the reconstruction is being overshadowed by the KLD loss (regularization loss). We should then, increase the KLD loss slowly, give the reconstruction loss some time to re-adjust.</p>
+
+<p>We put a weight parameter on the KLD term:</p>
+<ul>
+  <li>wait until model reached sufficent reconstruction quality, then increase the weight by a fraction at each step, cap at 1.</li>
+</ul>
+
+<p>This problem called posterior collapse. The model makes predictions independent of the latent representation, and will therefore try to solely minimize the regularization term instead. This causes the posterior to become equal to our prior, all our training representations collapse down to the same distribution.</p>
+
+<p>To solve this <a href="https://arxiv.org/pdf/1511.06349.pdf">Bowman et al.</a> mention in section 3.1 that they increase the KLD loss slowly from 0 to 1, called KLD annealing.</p>
+
+<p>Section 2.2 of <a href="https://arxiv.org/pdf/1611.02731.pdf">Chen et al.</a> mention that posterior collapse is caused by an expressive decoder, where the decoder could sufficiently model x without z. They look at this using a <a href="https://www.cs.helsinki.fi/u/ahonkela/papers/infview.pdf">bits-back</a> approach.</p>
+
+<h3 id="model-architecture">Model Architecture</h3>
+<p>the architecture that I used for this loss training:</p>
+<ul>
+  <li>Encoder: 2x Conv Layers, [64,4,2], 1x fully connected layer [256]</li>
+  <li>Latent Space Size: 32</li>
+  <li>Decoder: 1x Conv Layer [64,4,2], 1x Conv Layer [1,4,2], 1x fully connected layer [256]</li>
+</ul>
+
+<p>Additionally I used a batch size of 64</p>
+
+<h3 id="autoencoder-analysis">Autoencoder Analysis</h3>
+
+<p>Let’s first analyze a VAE with the KLD weight set to 0, just as an initial test to see if our model can run on the data. We need to see if the model has the capacity to learn the data.</p>
+
+<p><img src="/assets/vae_images/AE_0.gif" alt="Autoencoder Training Samples. Smaller pixel values were increased, to make them more prominent." />
+<img src="/assets/vae_images/AE_0_analysis.jpg" alt="Autoencoder Training Values, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev)." /></p>
+
+<p>Here, we see that the theory above is correct. We see from how the images evolve, that the model is capable of learning the images. Notice how the standard deviation of the latent variables are being minimized to 0.</p>
+
+<p>Since our model is not constrained, the goal of the model is to directly minimize the loss from the training samples, and thus has poor generation abilities. Mathematically, this is shown from the mean and standard deviation of the latent variables, which can be see as interpolations, or a bridge between the control points of the training samples. The model tries to minimize the effect each item has on one another, causing the increase in mean and the decrease in standard deviation.</p>
+
+<h3 id="kld-annealing">KLD Annealing</h3>
+
+<p>Now, lets try KLD annealing mentioned before. We can slowly increase the regularization term weight, while letting the reconstruction catch up. The rate of increase will be done empirically (through experiments). We can start increasing the weight after a while of letting the reconstruction term learn in an AE manner first (weight=0), to get a foothold.</p>
+
+<p><img src="/assets/vae_images/AE_1.gif" alt="Autoencoder Training Samples with KLD Annealing. Smaller pixel values were increased, to make them more prominent." /></p>
+
+<p><img src="/assets/vae_images/AE_1_analysis.jpg" alt="Autoencoder Training Values with KLD Annealing, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev)." /></p>
+
+<p>Here we can see that the generation results are better, and the reconstruction results seem to be less grainy as well, which might be an effect of using information from other, similar training points. This might be an effect of compression, where good representations are being forced to be learned to minimize the space due to the constraint (regularization term). However, over training, it seems like the numbers are noiser, this is probably due to the effect of the increase in the standard deviation term, causing more noise to be added (it is not being minimized to 0 now.). We can see how much more constrained the distributions of the latent variables are now. The ranges for the mean is smaller, where as the standard deviations are larger now.</p>
+
+<h3 id="decreasing-model-capacity">Decreasing Model Capacity</h3>
+
+<p>Another reason on why posterior collapse would happen is due to the decoder having high capacity. We can test this out by simply decreasing the capacity of the VAE.</p>
+
+<p>Convolutional neural networks have the assumption of invariance to position built into the achitecture through the sliding window (kernel). This means that it won’t have to learn this quality of the data. Normal neural networks perform worse, since they need sufficient data and model capacity to be able to learn this feature. Therefore, we should be able to decrease model capacity by introducing a normal feed forward neural network as the encoder and decoder.</p>
+
+<p>The architecture I used was:</p>
+<ul>
+  <li>a two 500 unit hidden layer feed forward neural net for the encoder with relu activations.</li>
+  <li>a one 500 unit hidden layer feed forward neural net for the decoder with relu activation.</li>
+</ul>
+
+<p><img src="/assets/vae_images/VAE_0.gif" alt="Variational Autoencoder Training Samples with low capacity. Smaller pixel values were increased, to make them more prominent." /></p>
+
+<p><img src="/assets/vae_images/VAE_0_analysis.jpg" alt="Variarional Autoencoder Training Values with low capacity, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev)." /></p>
+
+<p>This method seems more stable. We see that in the beginning the images start to all look similar and the KLD loss is approaching 0, representative of mode collapse. However, after a bit of training, the model is able to regain good representations. This seems much more stable than a high capacity network.</p>
+
+
+			<!--<footer>
+				
+				<p>This project is maintained by <a href="http://github.com/yukunchen113">yukunchen113</a></p>
+				
+				<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+			</footer>-->
+		</div>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {
+		    inlineMath: [['$','$'], ['\\(','\\)']],
+		    processEscapes: true
+		  }
+		});
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+		<script src="/assets/js/scale.fix.js"></script>
+		
+	</body>
+</html>

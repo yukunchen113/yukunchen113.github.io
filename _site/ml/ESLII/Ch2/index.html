@@ -30,7 +30,7 @@
 {"description":"Welcome! I’ll be posting explanations of projects, and various notes that I find useful and interesting!","@type":"WebPage","url":"http://localhost:4000/ml/ESLII/Ch2/","headline":"Ch2","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-		<link rel="stylesheet" href="/assets/css/style.css?v=e2203640a776e43031375db47228ac05723440df">
+		<link rel="stylesheet" href="/assets/css/style.css?v=018149f8643eb6a9b5848e2c69ce8df9be002d1e">
 		<!--[if lt IE 9]>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
 		<![endif]-->
@@ -71,7 +71,7 @@
 
 <h3 id="introduction">Introduction</h3>
 
-<p>what are <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#structural_assumptions">structural assumptions</a>?</p>
+<p>what are <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#structural_assumptions">structural assumptions</a>?</p>
 
 <p>linear models assume linearity in the structure of the data, so they might be inaccurate if the data is non linear.</p>
 
@@ -80,7 +80,7 @@
 <p>I think that structure is assumed when you have a model, and your data is used to tune the finite number of parameters in the model. Linear models seem to do this, and kNN don’t. It’s similar using data to fill in the blanks in a partly constructed paragraph vs using data to write a new paragraph. You will need more data if you don’t make structural assumptions, as well as there would be high variance.</p>
 
 <h3 id="section-231-linear-models-and-least-squares">Section 2.3.1: Linear Models and Least Squares</h3>
-<p>what is an <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#affine_set">affine set</a>?</p>
+<p>what is an <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#affine_set">affine set</a>?</p>
 
 <p>Here are some points about the (p+1) dimensional input-output space:</p>
 
@@ -101,7 +101,7 @@
 <p>Code for Scenario 1 and Scenario 2, as well as gaussian mixtures is available. Implemented with Python and Numpy. Called <em>gaussian_mixture.py</em></p>
 
 <h3 id="section-232-nearest-neighbor-methods">Section 2.3.2: Nearest Neighbor Methods</h3>
-<p>what are <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#voronoi_tessellation"><em>voronoi tessellation</em> or <em>voronoi diagrams</em></a>?</p>
+<p>what are <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#voronoi_tessellation"><em>voronoi tessellation</em> or <em>voronoi diagrams</em></a>?</p>
 
 <p>Becareful of overfitting (k=1), use a test set to determine if your model holds up.</p>
 
@@ -117,7 +117,7 @@
 <p>Projection pursuit defines a set of methods projects your high dimensional data onto a lower dimension, trying to keep the most informative/interesting parts. Eg. PCA.</p>
 
 <h2 id="chapter-24-statistical-decision-theory">Chapter 2.4: Statistical Decision Theory</h2>
-<p>what do you mean by <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#minimizing_pointwise"><em>minimizing pointwise</em></a>?</p>
+<p>what do you mean by <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#minimizing_pointwise"><em>minimizing pointwise</em></a>?</p>
 
 <p>we can replace $f(X)$ with $c$ since $f(X)$ is determinate, not a random variable, when conditioned on $X$.</p>
 
@@ -137,9 +137,9 @@
 
 <p>Augumenting kNN with additivity helps to resolve the high dimensional problem. Also we can have each kNN can be done locally for low dimensons, across all of the dimensions, then summed.</p>
 
-<p>why does $E\mathbin{\vert}Y - f(X)\mathbin{\vert}$ end up being the median($Y$|$X=x$)? See it <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#l1_to_median">here</a>.</p>
+<p>why does $E\mathbin{\vert}Y - f(X)\mathbin{\vert}$ end up being the median($Y$|$X=x$)? See it <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#l1_to_median">here</a>.</p>
 
-<p>what does it mean for a model to be <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#robust">robust</a>?</p>
+<p>what does it mean for a model to be <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#robust">robust</a>?</p>
 
 <p>For classification use a loss matrix, which assigns a loss if a class was missclassified given another.</p>
 
@@ -148,7 +148,7 @@
 <p>In the last paragraph of the section, they pose the situation where there were 2 classes (these classes should be: item exists, item doesn’t exist) for classification, and used a binary regression Y for this case (Dummy variable Y approach). For k classes we would have $Y_k$, a Y for each class. Notice how, we are now using a $Y$ for classification. So now we are doing a regression across each class, where the regression predicts the probability of being that class. Why would we do this? The reason why we would want to use Y is, now we can apply mean squared error to minimize Y, which would make solving our problem easier. There might be some problems with using regression for modeling a probability. problems might include: the fact that $\hat{f}(x)$ doesn’t have to be positive (regression can also be negative). This is a problem if we wanted each $Y_k$ to be a probability, which can’t be negative.</p>
 
 <h2 id="chapter-25-local-methods-in-high-dimensions">Chapter 2.5: Local Methods in High Dimensions</h2>
-<p>what is the <a href="/2018/12/23/ESLII-Chapter-2-Reference.html#curse_of_dimensionality"><em>curse of dimensionality</em></a>?</p>
+<p>what is the <a href="/reference/2018/12/23/ESLII-Chapter-2-Reference.html#curse_of_dimensionality"><em>curse of dimensionality</em></a>?</p>
 
 <p>How they got $e_p(r) = r^{1/p}$: $r$ is the volume, the volume of a hypercube is $r = e^p$ where p is the number of dimensions, and e is the edge length of the sample. r represents our sample data (or we can might also see it as a neighborhood for kNN) from the true distribution of the total hypercube (in this case it is the unit hypercube). This equation means that our data will represent a smaller chunk of the total cube as we increase the dimensionality (What happens to edge, as we represent the same r in higher dimensions? Keep r constant, increase p, see what happens to e). The example they use to show how data hungry higher dimensions are for kNN:</p>
 <blockquote>

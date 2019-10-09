@@ -1,5 +1,6 @@
 ---
 layout: default
+categories: [reference]
 title: "ESLII Chapter 2 Reference"
 ---
 # Reference for ESLII Chapter 2
