@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<style>
+			#link {color: #778899;}
+			nav ul {
+				font-size: 16pt;
+				font-weight: bold;
+			}
+			ul#menu li {
+				display:inline;
+				margin-right: 35px;
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Introspective Variational Autoencoder | Yukun Chen</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Introspective Variational Autoencoder" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="IntroVAE Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!" />
+<meta property="og:description" content="IntroVAE Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!" />
+<link rel="canonical" href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" />
+<meta property="og:url" content="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" />
+<meta property="og:site_name" content="Yukun Chen" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-23T00:00:00-04:00" />
+<script type="application/ld+json">
+{"description":"IntroVAE Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!","@type":"BlogPosting","url":"http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html","headline":"Introspective Variational Autoencoder","dateModified":"2019-06-23T00:00:00-04:00","datePublished":"2019-06-23T00:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link rel="stylesheet" href="/assets/css/style.css?v=5860eef85fc7d60211b44a42c71072a84fd1aa79">
+		<!--[if lt IE 9]>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="wrapper">
+
+			
+			<nav>
+			<ul id="menu">
+				<li><a id="link" href="/">Home</a></li>
+				<li><a id="link" href="/about">About</a></li>
+				<li><a id="link" href="/exp">Experience</a></li>
+				<li><a id="link" href="/projects">Projects</a></li>
+				<li><a id="link" href="/ml">ML</a></li>
+			</ul>
+			</nav>
+
+			<h1 id="introvae">IntroVAE</h1>
+<p>Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!</p>
+
+<h2 id="about-this-project">About this Project</h2>
+<p>This project implements the IntroVAE.</p>
+
+<p>Please see my project on implementing a <a href="https://github.com/yukunchen113/VariationalAutoEncoder">VAE</a> for more on VAE latent space analysis.</p>
+
+<p>Model checkpoints, parameters files and run files are saved in the predictions folder. See <em>Analysis</em> section below for more on each run.</p>
+
+<p><a href="https://github.com/yukunchen113/IntroVAE">Code is here</a></p>
+
+<h2 id="introvae-background">IntroVAE background</h2>
+<p>IntroVAE is influenced by two parts, a VAE for it’s stable latent space, and a GAN for it’s high quality image generations. Here, a second objective is added to the VAE, which is for making high quality images. IntroVAE uses the mean squared error loss as a skeleton structure for the GAN, preventing problems like mode collapse. The reconstruction loss term is used as a prior to the model, and the GAN portion will be used to reconstruct better images.</p>
+
+<h3 id="resources">Resources</h3>
+<p>Check out:</p>
+<ul>
+  <li><a href="https://github.com/yukunchen113/VariationalAutoEncoder">VAES implementation</a> and <a href="https://arxiv.org/abs/1312.6114">VAES Paper</a></li>
+  <li><a href="https://arxiv.org/abs/1609.03126">EBGANS</a> is the gan architecture used.</li>
+  <li><a href="https://arxiv.org/abs/1807.06358">IntroVAE original paper</a> for more information on the model architecture.</li>
+</ul>
+
+<h3 id="from-vae-to-introvae">From VAE to IntroVAE</h3>
+<p>The architecture of the VAE remains unchanged, there are not additional neurons used. The difference, is where the encoder and decoder are switched along the model pipeline. This is to facilitate the use of an EBGAN. The encoder becomes the discriminator, and the decoder becomes the generator. The latent vector doubles as a energy representation vector when the encoder is being used as a discriminator, and a latent vector during the regular VAE pass through.</p>
+
+<h3 id="theory">Theory</h3>
+
+<h2 id="analysis">Analysis:</h2>
+<p>I found that using different parameters than the paper works better for me. Tuning the three main latent hyperparameters will have a large effect on the type of images that are generated. \alpha controls the amount of GAN, if this is 0, the model reduces down to a regular VAE. <em>m</em> is used to separate between high and low regions of energy. \beta is used as a term to control the weight of the reconstruction loss. \beta is used to ground the images, too much, and your images will look unrealistic, too little, and the GAN collapses into a weird images which contain certain aspects of detail, such as skin tecture, and hair strands, but fails to maintain the structured look of a realistic face, there is also a chance of posterior collapse. See below:
+<img src="/assets/introvae_images/low_beta1.jpg" alt="beta = 0.05, alpha = 0.25, m = 500" /></p>
+
+<p>higher beta is better for this, accordingly, <em>m</em> should be tuned to be higher. This is because higher beta causes higher regularization loss, and the bound <em>m</em> should be enough to accomodate the higher ends of the regularization loss. However, this doesn’t provide a good latent traversal, so perhaps increasing the beta value would help.</p>
+
+<p>After some tests, we see that higher beta does help. It seems that the beta is giving the generated faces more structure. Whereas alpha is providing more details, such as the strands of hair and skin textures.</p>
+
+<p><img src="/assets/introvae_images/normal1.jpg" alt="beta = 0.75, alpha = 0.25, m =1000" /></p>
+
+<p>I’ll stop this for now due to low computational resources. Generating these high resolution images is quite computationally heavy. Analysis of the effects of the hyperparameters is done, and would just need some more tuning.</p>
+
+
+			<!--<footer>
+				
+				<p>This project is maintained by <a href="http://github.com/yukunchen113">yukunchen113</a></p>
+				
+				<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+			</footer>-->
+		</div>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {
+		    inlineMath: [['$','$'], ['\\(','\\)']],
+		    processEscapes: true
+		  }
+		});
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+		<script src="/assets/js/scale.fix.js"></script>
+		
+	</body>
+</html>

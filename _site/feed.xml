@@ -1,10 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-09T19:07:41-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Variational Autoencoder</title><link href="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" rel="alternate" type="text/html" title="Variational Autoencoder" /><published>2019-03-03T00:00:00-05:00</published><updated>2019-03-03T00:00:00-05:00</updated><id>http://localhost:4000/project/2019/03/03/Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html">&lt;h1 id=&quot;variational-autoencoder&quot;&gt;Variational Autoencoder&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-10T15:14:44-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
+&lt;p&gt;Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!&lt;/p&gt;
+
 &lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
+&lt;p&gt;This project implements the IntroVAE.&lt;/p&gt;
+
+&lt;p&gt;Please see my project on implementing a &lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;VAE&lt;/a&gt; for more on VAE latent space analysis.&lt;/p&gt;
+
+&lt;p&gt;Model checkpoints, parameters files and run files are saved in the predictions folder. See &lt;em&gt;Analysis&lt;/em&gt; section below for more on each run.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/yukunchen113/IntroVAE&quot;&gt;Code is here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introvae-background&quot;&gt;IntroVAE background&lt;/h2&gt;
+&lt;p&gt;IntroVAE is influenced by two parts, a VAE for it’s stable latent space, and a GAN for it’s high quality image generations. Here, a second objective is added to the VAE, which is for making high quality images. IntroVAE uses the mean squared error loss as a skeleton structure for the GAN, preventing problems like mode collapse. The reconstruction loss term is used as a prior to the model, and the GAN portion will be used to reconstruct better images.&lt;/p&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+&lt;p&gt;Check out:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;VAES implementation&lt;/a&gt; and &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;VAES Paper&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1609.03126&quot;&gt;EBGANS&lt;/a&gt; is the gan architecture used.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1807.06358&quot;&gt;IntroVAE original paper&lt;/a&gt; for more information on the model architecture.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;from-vae-to-introvae&quot;&gt;From VAE to IntroVAE&lt;/h3&gt;
+&lt;p&gt;The architecture of the VAE remains unchanged, there are not additional neurons used. The difference, is where the encoder and decoder are switched along the model pipeline. This is to facilitate the use of an EBGAN. The encoder becomes the discriminator, and the decoder becomes the generator. The latent vector doubles as a energy representation vector when the encoder is being used as a discriminator, and a latent vector during the regular VAE pass through.&lt;/p&gt;
+
+&lt;h3 id=&quot;theory&quot;&gt;Theory&lt;/h3&gt;
+
+&lt;h2 id=&quot;analysis&quot;&gt;Analysis:&lt;/h2&gt;
+&lt;p&gt;I found that using different parameters than the paper works better for me. Tuning the three main latent hyperparameters will have a large effect on the type of images that are generated. \alpha controls the amount of GAN, if this is 0, the model reduces down to a regular VAE. &lt;em&gt;m&lt;/em&gt; is used to separate between high and low regions of energy. \beta is used as a term to control the weight of the reconstruction loss. \beta is used to ground the images, too much, and your images will look unrealistic, too little, and the GAN collapses into a weird images which contain certain aspects of detail, such as skin tecture, and hair strands, but fails to maintain the structured look of a realistic face, there is also a chance of posterior collapse. See below:
+&lt;img src=&quot;/assets/introvae_images/low_beta1.jpg&quot; alt=&quot;beta = 0.05, alpha = 0.25, m = 500&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;higher beta is better for this, accordingly, &lt;em&gt;m&lt;/em&gt; should be tuned to be higher. This is because higher beta causes higher regularization loss, and the bound &lt;em&gt;m&lt;/em&gt; should be enough to accomodate the higher ends of the regularization loss. However, this doesn’t provide a good latent traversal, so perhaps increasing the beta value would help.&lt;/p&gt;
+
+&lt;p&gt;After some tests, we see that higher beta does help. It seems that the beta is giving the generated faces more structure. Whereas alpha is providing more details, such as the strands of hair and skin textures.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/introvae_images/normal1.jpg&quot; alt=&quot;beta = 0.75, alpha = 0.25, m =1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ll stop this for now due to low computational resources. Generating these high resolution images is quite computationally heavy. Analysis of the effects of the hyperparameters is done, and would just need some more tuning.&lt;/p&gt;</content><author><name></name></author><summary type="html">IntroVAE Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!</summary></entry><entry><title type="html">Variational Autoencoder</title><link href="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" rel="alternate" type="text/html" title="Variational Autoencoder" /><published>2019-03-03T00:00:00-05:00</published><updated>2019-03-03T00:00:00-05:00</updated><id>http://localhost:4000/project/2019/03/03/Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html">&lt;h1 id=&quot;variational-autoencoder&quot;&gt;Variational Autoencoder&lt;/h1&gt;
+&lt;p&gt;Compression of images into a vector representation. VAEs allow clustering of similar images in space. Can also randomly generate images. Maps the input space of images onto a very low dimensional space. For an analysis please see below!&lt;/p&gt;
+
+&lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
+
 &lt;p&gt;Here is a simple implementation of a VAE using tensorflow.&lt;/p&gt;
 
 &lt;p&gt;The parameters to be tuned can be accessed in params.py. Analysis below used these parameters.&lt;/p&gt;
 
 &lt;p&gt;The purpose of this repository is to learn and test an understanding of VAES. Please see the &lt;em&gt;VAE background&lt;/em&gt; section, this will get us an understanding of VAEs, which we can then test. See the &lt;em&gt;Analysis&lt;/em&gt; section for an analysis of the VAE.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;Code is here&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;vae-background&quot;&gt;VAE background&lt;/h2&gt;
 &lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
@@ -117,7 +160,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/assets/vae_images/VAE_0_analysis.jpg&quot; alt=&quot;Variarional Autoencoder Training Values with low capacity, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev).&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;This method seems more stable. We see that in the beginning the images start to all look similar and the KLD loss is approaching 0, representative of mode collapse. However, after a bit of training, the model is able to regain good representations. This seems much more stable than a high capacity network.&lt;/p&gt;</content><author><name></name></author><summary type="html">Variational Autoencoder About this Project Here is a simple implementation of a VAE using tensorflow.</summary></entry><entry><title type="html">ESLII Chapter 3 Reference</title><link href="http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference.html" rel="alternate" type="text/html" title="ESLII Chapter 3 Reference" /><published>2019-01-16T00:00:00-05:00</published><updated>2019-01-16T00:00:00-05:00</updated><id>http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference</id><content type="html" xml:base="http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference.html">&lt;h1 id=&quot;reference-for-eslii-chapter-3&quot;&gt;Reference for ESLII Chapter 3&lt;/h1&gt;
+&lt;p&gt;This method seems more stable. We see that in the beginning the images start to all look similar and the KLD loss is approaching 0, representative of mode collapse. However, after a bit of training, the model is able to regain good representations. This seems much more stable than a high capacity network.&lt;/p&gt;</content><author><name></name></author><summary type="html">Variational Autoencoder Compression of images into a vector representation. VAEs allow clustering of similar images in space. Can also randomly generate images. Maps the input space of images onto a very low dimensional space. For an analysis please see below!</summary></entry><entry><title type="html">ESLII Chapter 3 Reference</title><link href="http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference.html" rel="alternate" type="text/html" title="ESLII Chapter 3 Reference" /><published>2019-01-16T00:00:00-05:00</published><updated>2019-01-16T00:00:00-05:00</updated><id>http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference</id><content type="html" xml:base="http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference.html">&lt;h1 id=&quot;reference-for-eslii-chapter-3&quot;&gt;Reference for ESLII Chapter 3&lt;/h1&gt;
 &lt;p&gt;Here is the reference for chapter which includes explanations, and definitions for chapter 3 of &lt;em&gt;The Elements of Statistical Learning&lt;/em&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;-eyx-is-linear-in-the-inputs&quot;&gt;&lt;a id=&quot;linear_in_inputs&quot;&gt;&lt;/a&gt; E(Y|X) is linear in the inputs:&lt;/h3&gt;

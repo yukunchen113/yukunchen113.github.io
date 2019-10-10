@@ -1,4 +1,10 @@
+---
+layout: default
+categories: [project]
+title: "Introspective Variational Autoencoder"
+---
 # IntroVAE
+Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!
 
 ## About this Project
 This project implements the IntroVAE.
@@ -33,4 +39,4 @@ After some tests, we see that higher beta does help. It seems that the beta is g
 
 ![beta = 0.75, alpha = 0.25, m =1000](/assets/introvae_images/normal1.jpg)
 
-
+I'll stop this for now due to low computational resources. Generating these high resolution images is quite computationally heavy. Analysis of the effects of the hyperparameters is done, and would just need some more tuning.

@@ -4,12 +4,18 @@ categories: [project]
 title: "Variational Autoencoder"
 ---
 # Variational Autoencoder
+Compression of images into a vector representation. VAEs allow clustering of similar images in space. Can also randomly generate images. Maps the input space of images onto a very low dimensional space. For an analysis please see below!
+
 ## About this Project
+
 Here is a simple implementation of a VAE using tensorflow.
 
 The parameters to be tuned can be accessed in params.py. Analysis below used these parameters.
 
 The purpose of this repository is to learn and test an understanding of VAES. Please see the _VAE background_ section, this will get us an understanding of VAEs, which we can then test. See the _Analysis_ section for an analysis of the VAE.
+
+[Code is here](https://github.com/yukunchen113/VariationalAutoEncoder)
+
 
 ## VAE background
 ### Resources
