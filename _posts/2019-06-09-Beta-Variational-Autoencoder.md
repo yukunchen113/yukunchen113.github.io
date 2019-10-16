@@ -12,7 +12,10 @@ This project implements the β-VAE. β is a term which controls disentanglement 
 
 Please see my project on implementing a [VAE](https://github.com/yukunchen113/VariationalAutoEncoder) for more on VAE latent space analysis.
 
-Model checkpoints, parameters files and run files are saved in the predictions folder. See _Analysis_ section below for more on each run. 
+
+[Click here for my code!](https://github.com/yukunchen113/Beta-VAE/blob/master/README.md)
+
+See _Analysis_ section below for more on each run. 
 
 ## β-VAE background
 ### Resources

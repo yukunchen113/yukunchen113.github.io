@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-16T19:00:07-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-16T19:03:04-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
 &lt;p&gt;Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!&lt;/p&gt;
 
 &lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
@@ -44,7 +44,9 @@
 
 &lt;p&gt;Please see my project on implementing a &lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;VAE&lt;/a&gt; for more on VAE latent space analysis.&lt;/p&gt;
 
-&lt;p&gt;Model checkpoints, parameters files and run files are saved in the predictions folder. See &lt;em&gt;Analysis&lt;/em&gt; section below for more on each run.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yukunchen113/Beta-VAE/blob/master/README.md&quot;&gt;Click here for my code!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;See &lt;em&gt;Analysis&lt;/em&gt; section below for more on each run.&lt;/p&gt;
 
 &lt;h2 id=&quot;β-vae-background&quot;&gt;β-VAE background&lt;/h2&gt;
 &lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
