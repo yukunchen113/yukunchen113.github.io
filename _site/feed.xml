@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-16T19:03:04-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-16T19:05:42-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
 &lt;p&gt;Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!&lt;/p&gt;
 
 &lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
@@ -87,7 +87,7 @@
 
 &lt;h2 id=&quot;analysis&quot;&gt;Analysis:&lt;/h2&gt;
 
-&lt;p&gt;See the images/Training Results folder for various results ran by different training methods. These results are in the same format as the results from my VAE project. For this project, I aim to explore the new things that disentanglement brings to the table.&lt;/p&gt;
+&lt;p&gt;See the /assets/betavae_images/Training Results folder for various results ran by different training methods. These results are in the same format as the results from my VAE project. For this project, I aim to explore the new things that disentanglement brings to the table.&lt;/p&gt;
 
 &lt;p&gt;Here are the tests that were run:&lt;/p&gt;
 &lt;ul&gt;
@@ -106,28 +106,28 @@
 &lt;p&gt;Here I used a zero vector with the ith element as a value from range min_element to max_element, where i is the element with the highest absolute mean, and min_element and max_element are the min and max values respectively, of a given element in the latent representation after running 1000 samples.&lt;/p&gt;
 
 &lt;p&gt;β = 10000, KLD is too large, causing posterior collapse
-&lt;img src=&quot;images/latent_traversal/10000-Beta-VAE.jpg&quot; alt=&quot;β = 10000&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/10000-Beta-VAE.jpg&quot; alt=&quot;β = 10000&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;β = 1000, KLD is too large, causing posterior collapse
-&lt;img src=&quot;images/latent_traversal/1000-Beta-VAE.jpg&quot; alt=&quot;β = 1000&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/1000-Beta-VAE.jpg&quot; alt=&quot;β = 1000&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;β = 100, seems to be traversing background colour and shading, it counts hair colour as part of background
-&lt;img src=&quot;images/latent_traversal/100-Beta-VAE.jpg&quot; alt=&quot;β = 100&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/100-Beta-VAE.jpg&quot; alt=&quot;β = 100&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;β = 10, seems to be traversing background colour and gender
-&lt;img src=&quot;images/latent_traversal/10-Beta-VAE.jpg&quot; alt=&quot;β = 10&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/10-Beta-VAE.jpg&quot; alt=&quot;β = 10&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;KLD β decreasing to 0 from 100 in 40000 steps, here the face structure is changing, specifically the jaw and forehead
-&lt;img src=&quot;images/latent_traversal/KLD_Decrease_40000_steps-100to1-Beta-VAE.jpg&quot; alt=&quot;KLD β decreasing to 0 from 100 in 40000 steps&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/KLD_Decrease_40000_steps-100to1-Beta-VAE.jpg&quot; alt=&quot;KLD β decreasing to 0 from 100 in 40000 steps&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;KLD β annealing to 10 with 40000 steps, The background colour and shading is changing
-&lt;img src=&quot;images/latent_traversal/KLD_Anneal_40000_steps-10-Beta-VAE.jpg&quot; alt=&quot;KLD β annealing to 10 with 40000 steps&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/KLD_Anneal_40000_steps-10-Beta-VAE.jpg&quot; alt=&quot;KLD β annealing to 10 with 40000 steps&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;KLD decreasing to 0 from 10000 in 100000 steps, The hair colour and azimuth is changing as well.
-&lt;img src=&quot;images/latent_traversal/KLD_Decrease_100000_steps-10000to1-Beta-VAE.jpg&quot; alt=&quot;KLD decreasing to 0 from 10000 in 100000 steps&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/KLD_Decrease_100000_steps-10000to1-Beta-VAE.jpg&quot; alt=&quot;KLD decreasing to 0 from 10000 in 100000 steps&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;regular VAE, the gender, smile, and azimuth is changing here.
-&lt;img src=&quot;images/latent_traversal/VAE.jpg&quot; alt=&quot;regular VAE, the gender&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">β-VAE Introduces disentanglement into the VAE structure, throught a very simple tuning of a parameter, β. β controls the effect of the regularization term, which can constrain the latent space. Disentanglement aims to increase robustness and interpretability in these neural network models.</summary></entry><entry><title type="html">Variational Autoencoder</title><link href="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" rel="alternate" type="text/html" title="Variational Autoencoder" /><published>2019-03-03T00:00:00-05:00</published><updated>2019-03-03T00:00:00-05:00</updated><id>http://localhost:4000/project/2019/03/03/Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html">&lt;h1 id=&quot;variational-autoencoder&quot;&gt;Variational Autoencoder&lt;/h1&gt;
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/VAE.jpg&quot; alt=&quot;regular VAE, the gender&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">β-VAE Introduces disentanglement into the VAE structure, throught a very simple tuning of a parameter, β. β controls the effect of the regularization term, which can constrain the latent space. Disentanglement aims to increase robustness and interpretability in these neural network models.</summary></entry><entry><title type="html">Variational Autoencoder</title><link href="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" rel="alternate" type="text/html" title="Variational Autoencoder" /><published>2019-03-03T00:00:00-05:00</published><updated>2019-03-03T00:00:00-05:00</updated><id>http://localhost:4000/project/2019/03/03/Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html">&lt;h1 id=&quot;variational-autoencoder&quot;&gt;Variational Autoencoder&lt;/h1&gt;
 &lt;p&gt;Compression of images into a vector representation. VAEs allow clustering of similar images in space. Can also randomly generate images. Maps the input space of images onto a very low dimensional space. For an analysis please see below!&lt;/p&gt;
 
 &lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;

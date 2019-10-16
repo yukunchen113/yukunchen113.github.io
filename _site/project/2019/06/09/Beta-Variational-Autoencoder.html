@@ -102,7 +102,7 @@
 
 <h2 id="analysis">Analysis:</h2>
 
-<p>See the images/Training Results folder for various results ran by different training methods. These results are in the same format as the results from my VAE project. For this project, I aim to explore the new things that disentanglement brings to the table.</p>
+<p>See the /assets/betavae_images/Training Results folder for various results ran by different training methods. These results are in the same format as the results from my VAE project. For this project, I aim to explore the new things that disentanglement brings to the table.</p>
 
 <p>Here are the tests that were run:</p>
 <ul>
@@ -121,28 +121,28 @@
 <p>Here I used a zero vector with the ith element as a value from range min_element to max_element, where i is the element with the highest absolute mean, and min_element and max_element are the min and max values respectively, of a given element in the latent representation after running 1000 samples.</p>
 
 <p>β = 10000, KLD is too large, causing posterior collapse
-<img src="images/latent_traversal/10000-Beta-VAE.jpg" alt="β = 10000" /></p>
+<img src="/assets/betavae_images/latent_traversal/10000-Beta-VAE.jpg" alt="β = 10000" /></p>
 
 <p>β = 1000, KLD is too large, causing posterior collapse
-<img src="images/latent_traversal/1000-Beta-VAE.jpg" alt="β = 1000" /></p>
+<img src="/assets/betavae_images/latent_traversal/1000-Beta-VAE.jpg" alt="β = 1000" /></p>
 
 <p>β = 100, seems to be traversing background colour and shading, it counts hair colour as part of background
-<img src="images/latent_traversal/100-Beta-VAE.jpg" alt="β = 100" /></p>
+<img src="/assets/betavae_images/latent_traversal/100-Beta-VAE.jpg" alt="β = 100" /></p>
 
 <p>β = 10, seems to be traversing background colour and gender
-<img src="images/latent_traversal/10-Beta-VAE.jpg" alt="β = 10" /></p>
+<img src="/assets/betavae_images/latent_traversal/10-Beta-VAE.jpg" alt="β = 10" /></p>
 
 <p>KLD β decreasing to 0 from 100 in 40000 steps, here the face structure is changing, specifically the jaw and forehead
-<img src="images/latent_traversal/KLD_Decrease_40000_steps-100to1-Beta-VAE.jpg" alt="KLD β decreasing to 0 from 100 in 40000 steps" /></p>
+<img src="/assets/betavae_images/latent_traversal/KLD_Decrease_40000_steps-100to1-Beta-VAE.jpg" alt="KLD β decreasing to 0 from 100 in 40000 steps" /></p>
 
 <p>KLD β annealing to 10 with 40000 steps, The background colour and shading is changing
-<img src="images/latent_traversal/KLD_Anneal_40000_steps-10-Beta-VAE.jpg" alt="KLD β annealing to 10 with 40000 steps" /></p>
+<img src="/assets/betavae_images/latent_traversal/KLD_Anneal_40000_steps-10-Beta-VAE.jpg" alt="KLD β annealing to 10 with 40000 steps" /></p>
 
 <p>KLD decreasing to 0 from 10000 in 100000 steps, The hair colour and azimuth is changing as well.
-<img src="images/latent_traversal/KLD_Decrease_100000_steps-10000to1-Beta-VAE.jpg" alt="KLD decreasing to 0 from 10000 in 100000 steps" /></p>
+<img src="/assets/betavae_images/latent_traversal/KLD_Decrease_100000_steps-10000to1-Beta-VAE.jpg" alt="KLD decreasing to 0 from 10000 in 100000 steps" /></p>
 
 <p>regular VAE, the gender, smile, and azimuth is changing here.
-<img src="images/latent_traversal/VAE.jpg" alt="regular VAE, the gender" /></p>
+<img src="/assets/betavae_images/latent_traversal/VAE.jpg" alt="regular VAE, the gender" /></p>
 
 
 			<!--<footer>
