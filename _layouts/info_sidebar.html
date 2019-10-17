@@ -28,46 +28,47 @@
 		<div class="wrapper">
 			<header>
 
-				<h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
-				
-				{% if site.logo %}
-					<img src="{{site.logo | relative_url}}" alt="Logo" />
-				{% endif %}
 
-				<p>{{ site.description | default: site.github.project_tagline }}</p>
-
-				<!-- Sidebar 
 				<div>
-					<ul id="menu">
+					<div class="sidenav">
+						<!-- header
+						<h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
+						
+						{% if site.logo %}
+							<img src="{{site.logo | relative_url}}" alt="Logo" />
+						{% endif %}
+						header -->
+
+						<!--<p>{{ site.description | default: site.github.project_tagline }}</p> -->
+
+						<!-- Sidebar -->
 						<li><a id="link" href="/">Home</a></li>
 						<li><a id="link" href="/about">About</a></li>
 						<li><a id="link" href="/exp">Experience</a></li>
 						<li><a id="link" href="/projects">Projects</a></li>
-						<li><a id="link" href="/ml">ML</a></li>
-					</ul>
+						<li><a id="link" href="/ml">ML_Blog</a></li>
+						<!-- Sidebar -->
+					</div>
+					<!-- side content
+					{% if site.github.is_project_page %}
+
+					<p class="view">
+						<a href="{{ site.github.repository_url }}">View the Project on GitHub 
+							<small>{{ site.github.repository_nwo }}
+							</small>
+						</a>
+					</p>
+					{% endif %}
+
+					<p>{{ site.description | default: site.github.project_tagline }}</p>
+
+					{% if site.github.is_user_page %}
+					<p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
+					{% endif %}
+					side content -->
 				</div>
-				Sidebar -->
-
-				<div>
-				{% if site.github.is_project_page %}
-				<p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
-				{% endif %}
-
-				{% if site.github.is_user_page %}
-				<p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
-				{% endif %}
-			</div>
 			</header>
 			<section>
-			<nav>
-			<ul id="menu">
-				<li><a id="link" href="/">Home</a></li>
-				<li><a id="link" href="/about">About</a></li>
-				<li><a id="link" href="/exp">Experience</a></li>
-				<li><a id="link" href="/projects">Projects</a></li>
-				<li><a id="link" href="/ml">ML</a></li>
-			</ul>
-			</nav>
 
 			{{ content }}
 

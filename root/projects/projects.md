@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: info_sidebar
 title: Experience
 permalink: /projects/
 ---
@@ -16,3 +16,5 @@ permalink: /projects/
     {% endif %}
 	{% endfor %}
 </ul>
+
+<h4>Check out more of my projects on my <a id="link" href="https://github.com/yukunchen113">Github</a>!</h4>

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: info_sidebar
 title: Machine Learning
 permalink: /ml/
 ---

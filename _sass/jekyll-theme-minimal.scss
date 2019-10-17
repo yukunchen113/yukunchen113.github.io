@@ -106,15 +106,15 @@ img {
 
 header {
   width:270px;
-  float:left;
-  //position:fixed;
+  float:right;
+  position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
 header ul {
   list-style:none;
   height:40px;
-  padding:0;
+  padding:0px;
   //background: #f4f4f4;
   border-radius:5px;
   //border:1px solid #e0e0e0;
@@ -144,6 +144,7 @@ header ul a {
   text-align:center;
   padding-top:6px;
   height:34px;
+  float: right;
 }
 
 header ul a:hover, header ul a:focus {
@@ -196,6 +197,22 @@ footer {
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
+//custom 
+
+.sidenav{
+  padding-top: 60px;
+  text-align:right;
+  font-size:32px;
+  overflow-x: hidden;
+  list-style-type: none;
+  float: right;
+  padding-right: 30px;
+  position: static;
+  display: table-cell;
+}
+
+
+
 @media print, screen and (max-width: 960px) {
 
   div.wrapper {
@@ -204,13 +221,13 @@ footer {
   }
 
   header, section, footer {
-    float:none;
+    float:left;
     position:static;
     width:auto;
   }
 
   header {
-    padding-right:320px;
+    padding-right:0px;
   }
 
   section {
@@ -218,6 +235,11 @@ footer {
     border-width:1px 0;
     padding:20px 0;
     margin:0 0 20px;
+  }
+
+  .sidenav li{
+    font-size:20px;
+    display: inline;
   }
 
   header a small {
@@ -230,6 +252,10 @@ footer {
     top:52px;
   }
 }
+
+
+
+/*
 
 @media print, screen and (max-width: 720px) {
   body {
@@ -270,3 +296,4 @@ footer {
     color:#444;
   }
 }
+*/
