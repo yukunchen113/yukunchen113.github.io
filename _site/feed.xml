@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-16T23:49:52-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
+&lt;p&gt;Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!&lt;/p&gt;
+
+&lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
+&lt;p&gt;This project implements the IntroVAE.&lt;/p&gt;
+
+&lt;p&gt;Please see my project on implementing a &lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;VAE&lt;/a&gt; for more on VAE latent space analysis.&lt;/p&gt;
+
+&lt;p&gt;Model checkpoints, parameters files and run files are saved in the predictions folder. See &lt;em&gt;Analysis&lt;/em&gt; section below for more on each run.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/yukunchen113/IntroVAE&quot;&gt;Code is here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introvae-background&quot;&gt;IntroVAE background&lt;/h2&gt;
+&lt;p&gt;IntroVAE is influenced by two parts, a VAE for it’s stable latent space, and a GAN for it’s high quality image generations. Here, a second objective is added to the VAE, which is for making high quality images. IntroVAE uses the mean squared error loss as a skeleton structure for the GAN, preventing problems like mode collapse. The reconstruction loss term is used as a prior to the model, and the GAN portion will be used to reconstruct better images.&lt;/p&gt;
+
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+&lt;p&gt;Check out:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;VAES implementation&lt;/a&gt; and &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;VAES Paper&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1609.03126&quot;&gt;EBGANS&lt;/a&gt; is the gan architecture used.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1807.06358&quot;&gt;IntroVAE original paper&lt;/a&gt; for more information on the model architecture.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;from-vae-to-introvae&quot;&gt;From VAE to IntroVAE&lt;/h3&gt;
+&lt;p&gt;The architecture of the VAE remains unchanged, there are not additional neurons used. The difference, is where the encoder and decoder are switched along the model pipeline. This is to facilitate the use of an EBGAN. The encoder becomes the discriminator, and the decoder becomes the generator. The latent vector doubles as a energy representation vector when the encoder is being used as a discriminator, and a latent vector during the regular VAE pass through.&lt;/p&gt;
+
+&lt;h3 id=&quot;theory&quot;&gt;Theory&lt;/h3&gt;
+
+&lt;h2 id=&quot;analysis&quot;&gt;Analysis:&lt;/h2&gt;
+&lt;p&gt;I found that using different parameters than the paper works better for me. Tuning the three main latent hyperparameters will have a large effect on the type of images that are generated. \alpha controls the amount of GAN, if this is 0, the model reduces down to a regular VAE. &lt;em&gt;m&lt;/em&gt; is used to separate between high and low regions of energy. \beta is used as a term to control the weight of the reconstruction loss. \beta is used to ground the images, too much, and your images will look unrealistic, too little, and the GAN collapses into a weird images which contain certain aspects of detail, such as skin tecture, and hair strands, but fails to maintain the structured look of a realistic face, there is also a chance of posterior collapse. See below:
+&lt;img src=&quot;/assets/introvae_images/low_beta1.jpg&quot; alt=&quot;beta = 0.05, alpha = 0.25, m = 500&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;higher beta is better for this, accordingly, &lt;em&gt;m&lt;/em&gt; should be tuned to be higher. This is because higher beta causes higher regularization loss, and the bound &lt;em&gt;m&lt;/em&gt; should be enough to accomodate the higher ends of the regularization loss. However, this doesn’t provide a good latent traversal, so perhaps increasing the beta value would help.&lt;/p&gt;
+
+&lt;p&gt;After some tests, we see that higher beta does help. It seems that the beta is giving the generated faces more structure. Whereas alpha is providing more details, such as the strands of hair and skin textures.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/introvae_images/normal1.jpg&quot; alt=&quot;beta = 0.75, alpha = 0.25, m =1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ll stop this for now due to low computational resources. Generating these high resolution images is quite computationally heavy. Analysis of the effects of the hyperparameters is done, and would just need some more tuning.&lt;/p&gt;</content><author><name></name></author><summary type="html">IntroVAE Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!</summary></entry><entry><title type="html">Beta-VAE</title><link href="http://localhost:4000/project/2019/06/09/Beta-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Beta-VAE" /><published>2019-06-09T00:00:00-04:00</published><updated>2019-06-09T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/09/Beta-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/09/Beta-Variational-Autoencoder.html">&lt;h1 id=&quot;β-vae&quot;&gt;β-VAE&lt;/h1&gt;
+&lt;p&gt;Introduces disentanglement into the VAE structure, throught a very simple tuning of a parameter, β. β controls the effect of the regularization term, which can constrain the latent space. Disentanglement aims to increase robustness and interpretability in these neural network models.&lt;/p&gt;
+
+&lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
+&lt;p&gt;This project implements the β-VAE. β is a term which controls disentanglement within latent representations.&lt;/p&gt;
+
+&lt;p&gt;Please see my project on implementing a &lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;VAE&lt;/a&gt; for more on VAE latent space analysis.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/yukunchen113/Beta-VAE/blob/master/README.md&quot;&gt;Click here for my code!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;See &lt;em&gt;Analysis&lt;/em&gt; section below for more on each run.&lt;/p&gt;
+
+&lt;h2 id=&quot;β-vae-background&quot;&gt;β-VAE background&lt;/h2&gt;
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+&lt;p&gt;These are resources for VAEs and β-VAE:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;VAE Original Paper: &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-Encoding Variational Bayes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;VAE Explanation: &lt;a href=&quot;https://arxiv.org/abs/1606.05908&quot;&gt;Tutorial on Variational Autoencoders&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;β-VAE Original Paper: &lt;a href=&quot;https://openreview.net/pdf?id=Sy2fzU9gl&quot;&gt;β-VAE&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Understanding disentangling in β-VAE: &lt;a href=&quot;https://arxiv.org/pdf/1804.03599.pdf&quot;&gt;Understanding disentangling in β-VAE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;from-vae-to-β-vae&quot;&gt;From VAE to β-VAE&lt;/h3&gt;
+&lt;p&gt;In terms of architecture, β-VAE is the same as the VAE. The change is in the loss function. the β term is a multiplier on the KLD term.&lt;/p&gt;
+
+&lt;p&gt;Recall how each latent representation given a training sample is a probability distribution. An increase in the β term will cause the probabilites to become more like a zero-centered isotropic normal. The standard deviations will become closer to 1, and the means will be closer to 0. The natural form that the loss without the KLD term will want to take will be, dirac deltas that are spread out (have a large range of means and close to 0 standard deviation). This is to prevent the learned representation of each image from affecting each other as much as possible. Increasing the β term will squish the distributions, and will widen each distribution. Forcing there to be significant representations inbetween points. This is the VAE objective.&lt;/p&gt;
+
+&lt;h3 id=&quot;theory&quot;&gt;Theory&lt;/h3&gt;
+
+&lt;h4 id=&quot;how-disentanglement-happens-in-β-vae-and-how-it-relates-to-the-vae-objective&quot;&gt;How disentanglement happens in β-VAE and how it relates to the VAE objective&lt;/h4&gt;
+&lt;p&gt;By Squishing all the distributions of the latent representation together, the representations are forced to share common features to maintain accuracy. The representations will start to represent the most promenent features (according to the loss), maximizing the use of the limited capacity due to the constraints of the KLD term.&lt;/p&gt;
+
+&lt;p&gt;The limited capacity forces disentanglement, where the parts that are common across models. Through the architecture, the covariance matrix of the latent representation is also constrained to be a diagonal matrix, forcing basis of the latent representations to align with each element in the latent representation. This causes the parts of variance to be aligned with the each element in the latent representation.&lt;/p&gt;
+
+&lt;p&gt;For more on this theory, please see &lt;a href=&quot;https://arxiv.org/pdf/1804.03599.pdf&quot;&gt;Understanding disentangling in β-VAE&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-does-disentanglement-correspond-with-the-features-we-recognize&quot;&gt;How does disentanglement correspond with the features we recognize?&lt;/h4&gt;
+
+&lt;p&gt;But how does the specific disentangled features correspond to the features that we recognize? My thoughts are as follows. First off, higher sources of variance will require information to be passed through. &lt;a href=&quot;https://arxiv.org/pdf/1804.03599.pdf&quot;&gt;Understanding disentangling in β-VAE&lt;/a&gt; explains that changes in features that inquire greater amounts of loss will be more heavily valued/biased towards. This means that when using MSE as a loss, position of the image is most likely to be learned first. This is due to the fact that a slightly shifted reconstruction image would have a high loss, even if it is perfect. High variance in one direction (high variance of one feature) would allow the representation of that feature to be more disentangled. This is to maximize the amount of information that is transfered about that feature for accurate reconstructions, to decrease the loss given the wide range of different faces. High variance which have little effect on the loss might be ignored by the model to prioritize other features. Low variance and high loss might be represented depending on how much variance there is in the feature and how much loss is effected. Very low amounts of variance would cause the model to just memorize the mean across the feature, given that this will minimize the loss to a satisfactory result. The variance mentioned here is the diversity of different examples given a certain feature, which I will call, the variance of a feature. The variance of a feature and the amount of loss a small change in that feature causes can be summarized by the amount of variance of the feature from the point of view of the loss (I will call this &lt;em&gt;loss feature variance&lt;/em&gt;), which is a direct way of calculating the probability that a feature will be disentangled. High amounts of loss feature variance will cause high amounts of loss if this feature is not learned properly.&lt;/p&gt;
+
+&lt;p&gt;The reason why disentanglement ‘happens’ to correspond to the features that we recognize is due to the fact that there is structure within the data, which can be found by both humans and AI. I mentioned above that a function of the variance in the features, given the bias in the loss is what causes disentanglement in the model. I believe that this &lt;em&gt;variance in the features&lt;/em&gt; is what people use to classify different features. If there is an variance between similar details (these details are mutually exclusive with each other), then this will be called a feature. differnt types of features are separated by further differences, and are independent/have cases which they are independent of each other. For example, if eye color is a feature, it can only have one dominant colour (from a high level view of the face, for simple models). Whereas nose shape is independent of eye color will be a separate feature. (of course, we can get more specific with multieye colour, but even then, each colour would then be a feature, still maintaining independence). The model learns these facts though the loss as defined above.&lt;/p&gt;
+
+&lt;p&gt;Something interesting about disentanglement is it’s relationship with domain randomization. Domain randomization seems to increase the amount of data used for training. It seems to directly try to tackle the the problem above, learning variance between the features (which covary, which ones are independent and which ones are mutually exclusive) by directly increasing the amount of variance per feature, which will further distinguish each feature. Domain randomization aims to directly increase the amount of variance between desirable features in the data, letting the model to find the structure within the relationships of the data, while causing a natural regularizing effect with noise withing the original data generative factors. Disentanglement using VAEs lower the information capacity of what is being passed through as a regularizer, which will cause the model to be more sensitive to these high amounts of variance thus causing a similar effect to domain randomization. Both these regularizing effects aim for stability to different features/examples and learning of the data generative factors. Though the difference between them seems to be how they treat the nuisance factors. Domain randomization aims to ignore them, and disentanglement aims to still take them into account. (invariance vs equivariance)&lt;/p&gt;
+
+&lt;h3 id=&quot;disentanglement-metric&quot;&gt;Disentanglement Metric&lt;/h3&gt;
+&lt;p&gt;From &lt;a href=&quot;https://openreview.net/pdf?id=Sy2fzU9gl&quot;&gt;β-VAE&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The original metric to evaluate disentanglement is to see the linear relationship between the ground truth factors and the disentangled representation.&lt;/p&gt;
+
+&lt;h2 id=&quot;analysis&quot;&gt;Analysis:&lt;/h2&gt;
+
+&lt;p&gt;See the /assets/betavae_images/Training Results folder for various results ran by different training methods. These results are in the same format as the results from my VAE project. For this project, I aim to explore the new things that disentanglement brings to the table.&lt;/p&gt;
+
+&lt;p&gt;Here are the tests that were run:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;regular VAE: VAE&lt;/li&gt;
+  &lt;li&gt;β set to 10: 10-Beta-VAE&lt;/li&gt;
+  &lt;li&gt;β set to 100: 100-Beta-VAE&lt;/li&gt;
+  &lt;li&gt;β set to 1000: 1000-Beta-VAE&lt;/li&gt;
+  &lt;li&gt;β set to 10000: 10000-Beta-VAE&lt;/li&gt;
+  &lt;li&gt;KLD β annealing to 10 with 40000 steps: KLD_Anneal_40000_steps-10-Beta-VAE&lt;/li&gt;
+  &lt;li&gt;KLD β decreasing to 0 from 100 in 40000 steps: KLD_Decrease_40000_steps-100to1-Beta-VAE&lt;/li&gt;
+  &lt;li&gt;KLD decreasing to 0 from 10000 in 100000 steps: KLD_Decrease_100000_steps-10000to1-Beta-VAE&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To do analysis of disentanglement, we should decide which element in the latent representation to vary. Lets try the most distinct feature first. Under heavy regularizations, the model will try to optimize for the feature that affects the loss the most. We can try to get the average distribution per element that is the furthest from a zero-centered isotropic normal distribution, specifically, the mean should be the farthest from zero. Lets try to see what happens when varying this element.&lt;/p&gt;
+
+&lt;p&gt;Here I used a zero vector with the ith element as a value from range min_element to max_element, where i is the element with the highest absolute mean, and min_element and max_element are the min and max values respectively, of a given element in the latent representation after running 1000 samples.&lt;/p&gt;
+
+&lt;p&gt;β = 10000, KLD is too large, causing posterior collapse
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/10000-Beta-VAE.jpg&quot; alt=&quot;β = 10000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;β = 1000, KLD is too large, causing posterior collapse
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/1000-Beta-VAE.jpg&quot; alt=&quot;β = 1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;β = 100, seems to be traversing background colour and shading, it counts hair colour as part of background
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/100-Beta-VAE.jpg&quot; alt=&quot;β = 100&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;β = 10, seems to be traversing background colour and gender
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/10-Beta-VAE.jpg&quot; alt=&quot;β = 10&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;KLD β decreasing to 0 from 100 in 40000 steps, here the face structure is changing, specifically the jaw and forehead
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/KLD_Decrease_40000_steps-100to1-Beta-VAE.jpg&quot; alt=&quot;KLD β decreasing to 0 from 100 in 40000 steps&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;KLD β annealing to 10 with 40000 steps, The background colour and shading is changing
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/KLD_Anneal_40000_steps-10-Beta-VAE.jpg&quot; alt=&quot;KLD β annealing to 10 with 40000 steps&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;KLD decreasing to 0 from 10000 in 100000 steps, The hair colour and azimuth is changing as well.
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/KLD_Decrease_100000_steps-10000to1-Beta-VAE.jpg&quot; alt=&quot;KLD decreasing to 0 from 10000 in 100000 steps&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;regular VAE, the gender, smile, and azimuth is changing here.
+&lt;img src=&quot;/assets/betavae_images/latent_traversal/VAE.jpg&quot; alt=&quot;regular VAE, the gender&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">β-VAE Introduces disentanglement into the VAE structure, throught a very simple tuning of a parameter, β. β controls the effect of the regularization term, which can constrain the latent space. Disentanglement aims to increase robustness and interpretability in these neural network models.</summary></entry><entry><title type="html">Variational Autoencoder</title><link href="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html" rel="alternate" type="text/html" title="Variational Autoencoder" /><published>2019-03-03T00:00:00-05:00</published><updated>2019-03-03T00:00:00-05:00</updated><id>http://localhost:4000/project/2019/03/03/Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/03/03/Variational-Autoencoder.html">&lt;h1 id=&quot;variational-autoencoder&quot;&gt;Variational Autoencoder&lt;/h1&gt;
+&lt;p&gt;Compression of images into a vector representation. VAEs allow clustering of similar images in space. Can also randomly generate images. Maps the input space of images onto a very low dimensional space. For an analysis please see below!&lt;/p&gt;
+
+&lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
+
+&lt;p&gt;Here is a simple implementation of a VAE using tensorflow.&lt;/p&gt;
+
+&lt;p&gt;The parameters to be tuned can be accessed in params.py. Analysis below used these parameters.&lt;/p&gt;
+
+&lt;p&gt;The purpose of this repository is to learn and test an understanding of VAES. Please see the &lt;em&gt;VAE background&lt;/em&gt; section, this will get us an understanding of VAEs, which we can then test. See the &lt;em&gt;Analysis&lt;/em&gt; section for an analysis of the VAE.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/yukunchen113/VariationalAutoEncoder&quot;&gt;Code is here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;vae-background&quot;&gt;VAE background&lt;/h2&gt;
+&lt;h3 id=&quot;resources&quot;&gt;Resources&lt;/h3&gt;
+&lt;p&gt;These are great resources for VAEs:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Original Paper: &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-Encoding Variational Bayes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Explanation: &lt;a href=&quot;https://arxiv.org/abs/1606.05908&quot;&gt;Tutorial on Variational Autoencoders&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;theory&quot;&gt;Theory&lt;/h3&gt;
+&lt;h4 id=&quot;what-is-a-latent-space&quot;&gt;What is a latent space?&lt;/h4&gt;
+&lt;p&gt;This is the representation defined by the bottleneck layer of the network. This representation is called the latent representation, which is used to generate the observable data, X.&lt;/p&gt;
+
+&lt;p&gt;The latent space is just the continuous set of all these latent representations.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-does-vaes-construct-a-latent-space&quot;&gt;How does VAEs construct a latent space?&lt;/h4&gt;
+&lt;p&gt;Here is the problem: Train on a single point won’t give good results for the points around that point. If we were to just deterministically backprop the difference (as is what happens with a normal autoencoder), we might not get good results when sampling the parts of the space that aren’t training data representations.&lt;/p&gt;
+
+&lt;p&gt;To solve this, we should train a region around X for a given point X. Using the information in X to shape a region in space. Using many of these X will allow us to create our space. The region between two training points will be an interpolation between the two points.&lt;/p&gt;
+
+&lt;p&gt;Another desireable of our space is if we can cause a small region in our space to generate the desired data, as we get further from this region, generation of X becomes more unlikely. This will allow us to use the information within the data efficiently.&lt;/p&gt;
+
+&lt;p&gt;How do we implement this solution? We will have our latent representation be a distribution instead of a deterministic point or a dirac delta. When training, we can update the parameters in this distribution.&lt;/p&gt;
+
+&lt;p&gt;How do we choose a distribution? The standard distribution to choose would be the normal distribution (this is what the paper uses). No matter what the image distribution is (for a given X), our encoder neural network should be able to map the distribution to a normal, (this is our prior). See Figure 2 in &lt;a href=&quot;https://arxiv.org/abs/1606.05908&quot;&gt;Tutorial on Variational Autoencoders&lt;/a&gt;. We can represent the bottleneck layer as a distribution by calculating the mean and standard deviation.&lt;/p&gt;
+
+&lt;p&gt;Prevent the distribution from collapsing to a point! Even if we set up our network to be able to represent a probabilistic latent representation, there is nothing preventing the network from setting the standard deviation to zero. Nothing in our objective accounts for the space between training samples. We need to constrain our latent representation distribution. This is where the KL divergence regularization term comes in. We will constrain it be close to our prior. We try to minimize the KL divergence between the prior (which is an isotropic normal) an our calculated distribution. By doing this we have also forced the images generated to be anchored to the same distribution/region of space (centered around 0), which is what we also desired.&lt;/p&gt;
+
+&lt;h3 id=&quot;implementation-tricks&quot;&gt;Implementation Tricks&lt;/h3&gt;
+&lt;p&gt;reparameterization trick:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;What is it?
+    &lt;ul&gt;
+      &lt;li&gt;We won’t be able to backprop through a random variable. This means that we won’t be able to update the inference model, as our latent representation will be a random variable.&lt;/li&gt;
+      &lt;li&gt;The reparameterization trick aims to solve this by separating the deterministic part and the random part. We can have mean and standard deviation be deterministic, where we can back propogate through, and have a noise term which get mulitplied to the standard deviation, which will cause this to be random.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;How to code it? We need to constrain our standard deviation to be positive, since our KL loss depends on that. We can either apply a softplus to the stddev, or we can allow it to be negative and say that the network is calculating the natural log of the stddev, which is what this project does.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;analysis&quot;&gt;Analysis:&lt;/h2&gt;
+&lt;h3 id=&quot;ae-vs-vae&quot;&gt;AE vs VAE&lt;/h3&gt;
+&lt;p&gt;To first test out our theory, lets look at the difference between an autoencoder and a Variational Auto Encoder.&lt;/p&gt;
+
+&lt;p&gt;It should be easy to switch between the two of them, if we were to just leave out the KL divergence term, we will only be fitting the training data, with dirac deltas, as we are setting X=f(X) (which defines a single point, X). This means that we can expect very good reconstruction, but very poor generation. VAEs will have equal, or worse reconstruction than this, as they are optimizing for a region in space. So, our VAE loss will be bounded by our AE loss. After a bit of testing, we can see that our AE loss is 0.004 (MSE).&lt;/p&gt;
+
+&lt;h3 id=&quot;problem-with-the-learned-representations&quot;&gt;Problem with the learned representations.&lt;/h3&gt;
+
+&lt;p&gt;When converting our network from a AE to a VAE, we start to see a problem. The KLD loss becomes 0! This causes the posterior distribution to be equal to the prior, which will generate the same image every time!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vae_images/MSE_0.jpg&quot; alt=&quot;Mean Squared Error and KL Loss&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The loss for the reconstruction is being overshadowed by the KLD loss (regularization loss). We should then, increase the KLD loss slowly, give the reconstruction loss some time to re-adjust.&lt;/p&gt;
+
+&lt;p&gt;We put a weight parameter on the KLD term:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;wait until model reached sufficent reconstruction quality, then increase the weight by a fraction at each step, cap at 1.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This problem called posterior collapse. The model makes predictions independent of the latent representation, and will therefore try to solely minimize the regularization term instead. This causes the posterior to become equal to our prior, all our training representations collapse down to the same distribution.&lt;/p&gt;
+
+&lt;p&gt;To solve this &lt;a href=&quot;https://arxiv.org/pdf/1511.06349.pdf&quot;&gt;Bowman et al.&lt;/a&gt; mention in section 3.1 that they increase the KLD loss slowly from 0 to 1, called KLD annealing.&lt;/p&gt;
+
+&lt;p&gt;Section 2.2 of &lt;a href=&quot;https://arxiv.org/pdf/1611.02731.pdf&quot;&gt;Chen et al.&lt;/a&gt; mention that posterior collapse is caused by an expressive decoder, where the decoder could sufficiently model x without z. They look at this using a &lt;a href=&quot;https://www.cs.helsinki.fi/u/ahonkela/papers/infview.pdf&quot;&gt;bits-back&lt;/a&gt; approach.&lt;/p&gt;
+
+&lt;h3 id=&quot;model-architecture&quot;&gt;Model Architecture&lt;/h3&gt;
+&lt;p&gt;the architecture that I used for this loss training:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Encoder: 2x Conv Layers, [64,4,2], 1x fully connected layer [256]&lt;/li&gt;
+  &lt;li&gt;Latent Space Size: 32&lt;/li&gt;
+  &lt;li&gt;Decoder: 1x Conv Layer [64,4,2], 1x Conv Layer [1,4,2], 1x fully connected layer [256]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Additionally I used a batch size of 64&lt;/p&gt;
+
+&lt;h3 id=&quot;autoencoder-analysis&quot;&gt;Autoencoder Analysis&lt;/h3&gt;
+
+&lt;p&gt;Let’s first analyze a VAE with the KLD weight set to 0, just as an initial test to see if our model can run on the data. We need to see if the model has the capacity to learn the data.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vae_images/AE_0.gif&quot; alt=&quot;Autoencoder Training Samples. Smaller pixel values were increased, to make them more prominent.&quot; /&gt;
+&lt;img src=&quot;/assets/vae_images/AE_0_analysis.jpg&quot; alt=&quot;Autoencoder Training Values, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev).&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, we see that the theory above is correct. We see from how the images evolve, that the model is capable of learning the images. Notice how the standard deviation of the latent variables are being minimized to 0.&lt;/p&gt;
+
+&lt;p&gt;Since our model is not constrained, the goal of the model is to directly minimize the loss from the training samples, and thus has poor generation abilities. Mathematically, this is shown from the mean and standard deviation of the latent variables, which can be see as interpolations, or a bridge between the control points of the training samples. The model tries to minimize the effect each item has on one another, causing the increase in mean and the decrease in standard deviation.&lt;/p&gt;
+
+&lt;h3 id=&quot;kld-annealing&quot;&gt;KLD Annealing&lt;/h3&gt;
+
+&lt;p&gt;Now, lets try KLD annealing mentioned before. We can slowly increase the regularization term weight, while letting the reconstruction catch up. The rate of increase will be done empirically (through experiments). We can start increasing the weight after a while of letting the reconstruction term learn in an AE manner first (weight=0), to get a foothold.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vae_images/AE_1.gif&quot; alt=&quot;Autoencoder Training Samples with KLD Annealing. Smaller pixel values were increased, to make them more prominent.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vae_images/AE_1_analysis.jpg&quot; alt=&quot;Autoencoder Training Values with KLD Annealing, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev).&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we can see that the generation results are better, and the reconstruction results seem to be less grainy as well, which might be an effect of using information from other, similar training points. This might be an effect of compression, where good representations are being forced to be learned to minimize the space due to the constraint (regularization term). However, over training, it seems like the numbers are noiser, this is probably due to the effect of the increase in the standard deviation term, causing more noise to be added (it is not being minimized to 0 now.). We can see how much more constrained the distributions of the latent variables are now. The ranges for the mean is smaller, where as the standard deviations are larger now.&lt;/p&gt;
+
+&lt;h3 id=&quot;decreasing-model-capacity&quot;&gt;Decreasing Model Capacity&lt;/h3&gt;
+
+&lt;p&gt;Another reason on why posterior collapse would happen is due to the decoder having high capacity. We can test this out by simply decreasing the capacity of the VAE.&lt;/p&gt;
+
+&lt;p&gt;Convolutional neural networks have the assumption of invariance to position built into the achitecture through the sliding window (kernel). This means that it won’t have to learn this quality of the data. Normal neural networks perform worse, since they need sufficient data and model capacity to be able to learn this feature. Therefore, we should be able to decrease model capacity by introducing a normal feed forward neural network as the encoder and decoder.&lt;/p&gt;
+
+&lt;p&gt;The architecture I used was:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;a two 500 unit hidden layer feed forward neural net for the encoder with relu activations.&lt;/li&gt;
+  &lt;li&gt;a one 500 unit hidden layer feed forward neural net for the decoder with relu activation.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vae_images/VAE_0.gif&quot; alt=&quot;Variational Autoencoder Training Samples with low capacity. Smaller pixel values were increased, to make them more prominent.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vae_images/VAE_0_analysis.jpg&quot; alt=&quot;Variarional Autoencoder Training Values with low capacity, The upper and lower bounds are the highest and lowest values in the test batch for their repective labels (ie. mean and stddev).&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This method seems more stable. We see that in the beginning the images start to all look similar and the KLD loss is approaching 0, representative of mode collapse. However, after a bit of training, the model is able to regain good representations. This seems much more stable than a high capacity network.&lt;/p&gt;</content><author><name></name></author><summary type="html">Variational Autoencoder Compression of images into a vector representation. VAEs allow clustering of similar images in space. Can also randomly generate images. Maps the input space of images onto a very low dimensional space. For an analysis please see below!</summary></entry><entry><title type="html">ESLII Chapter 3 Reference</title><link href="http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference.html" rel="alternate" type="text/html" title="ESLII Chapter 3 Reference" /><published>2019-01-16T00:00:00-05:00</published><updated>2019-01-16T00:00:00-05:00</updated><id>http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference</id><content type="html" xml:base="http://localhost:4000/reference/2019/01/16/ESLII-Chapter-3-Reference.html">&lt;h1 id=&quot;reference-for-eslii-chapter-3&quot;&gt;Reference for ESLII Chapter 3&lt;/h1&gt;
+&lt;p&gt;Here is the reference for chapter which includes explanations, and definitions for chapter 3 of &lt;em&gt;The Elements of Statistical Learning&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;-eyx-is-linear-in-the-inputs&quot;&gt;&lt;a id=&quot;linear_in_inputs&quot;&gt;&lt;/a&gt; E(Y|X) is linear in the inputs:&lt;/h3&gt;
+&lt;p&gt;Linear in the inputs mean that there is a direct linear correlation between X and Y. A transformation of your input data, X can be used directly as components of Y.&lt;/p&gt;
+
+&lt;p&gt;What this means is that, the combinations of your parameters $\beta$ end up becoming linear. Remember that your parameters are numerical representations of the relationship between your X and Y.&lt;/p&gt;</content><author><name></name></author><summary type="html">Reference for ESLII Chapter 3 Here is the reference for chapter which includes explanations, and definitions for chapter 3 of The Elements of Statistical Learning.</summary></entry><entry><title type="html">ESLII Chapter 2 Reference</title><link href="http://localhost:4000/reference/2018/12/23/ESLII-Chapter-2-Reference.html" rel="alternate" type="text/html" title="ESLII Chapter 2 Reference" /><published>2018-12-23T00:00:00-05:00</published><updated>2018-12-23T00:00:00-05:00</updated><id>http://localhost:4000/reference/2018/12/23/ESLII-Chapter-2-Reference</id><content type="html" xml:base="http://localhost:4000/reference/2018/12/23/ESLII-Chapter-2-Reference.html">&lt;h1 id=&quot;reference-for-eslii-chapter-2&quot;&gt;Reference for ESLII Chapter 2&lt;/h1&gt;
+&lt;p&gt;Here is the reference for chapter which includes explanations, and definitions for chapter 2 of &lt;em&gt;The Elements of Statistical Learning&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;affine-set&quot;&gt;&lt;a id=&quot;affine_set&quot;&gt;&lt;/a&gt;Affine Set&lt;/h3&gt;
+&lt;p&gt;An affine set is a continuous set/space of points, similar to a &lt;a href=&quot;#convex_set&quot;&gt;convex set&lt;/a&gt;, but rather than just including the line segment in between the two point, an affine set includes the points on the line, if both ends of the straight line was extended to infinity. So rather than including the points on just a infinite or finite segment, it includes the points on an infinite line. (convex sets can be infinite as well as finite. Affine sets are only finite.)&lt;/p&gt;
+
+&lt;p&gt;Check out &lt;a href=&quot;https://www.quora.com/What-the-relationship-between-affine-set-and-convex-set&quot;&gt;this Quora answer&lt;/a&gt; or &lt;a href=&quot;https://math.stackexchange.com/questions/88750/convexity-and-affineness&quot;&gt;this stackexchange answer&lt;/a&gt; for information on affine vs convex sets.&lt;/p&gt;
+
+&lt;h3 id=&quot;convex-set&quot;&gt;&lt;a id=&quot;convex_set&quot;&gt;&lt;/a&gt;Convex Set&lt;/h3&gt;
+&lt;p&gt;A convex set is a region of space, where given any 2 points in that region/set, if we were to draw a straight line segment connecting the two points, every point on that line should be in the convex set as well. This means that regions that look line a “U” are not convex since you can pick out two points (eg. on the tail ends of the U) where the line inbetween is not included in the set.&lt;/p&gt;
+
+&lt;p&gt;For more information watch &lt;a href=&quot;https://www.youtube.com/watch?v=VcTIOQpRG1o&quot;&gt;this youtube video&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h3 id=&quot;how-does-emathbinverty---fxmathbinvert-end-up-being-the-medianyxx&quot;&gt;&lt;a id=&quot;l1_to_median&quot;&gt;&lt;/a&gt;How does $E\mathbin{\vert}Y - f(X)\mathbin{\vert}$ end up being the median($Y$|$X=x$)?&lt;/h3&gt;
+&lt;p&gt;Lets look at this closely. $Y - f(X)$ is the error of your model.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;If this error was squared (L2 error)&lt;/em&gt;: then larger errors for a point x_l, will be weighted more than smaller errors by a given point x_s. A small shift in $f(x)$ towards the larger error point will reduce the error by much more than a shift of the same amount towards that small error point. This means that the model will be biased towards solving the larger errors first. Which might be what you want, but this also means that outliers could be a huge problem. Also, if you wanted to build a model high in variance, this loss might cause constrain that (Eg. Generative models for art. You wouldn’t want the same art piece to be generated each time.)&lt;/p&gt;
+
+&lt;p&gt;However &lt;em&gt;if we used the abolute of this error (L1 error)&lt;/em&gt;: then shifts towards larger values will decrease the error by the same amount as shifts towards the smaller values. This will cause us to find some sort of equilibrium at the median of the datapoints, where if you shifted your prediction up, the error of the points below would increase, while the points above would decrease, and vice versa for a shift downwards. This will be much more helpful with regards to outliers.&lt;/p&gt;
+
+&lt;p&gt;I highly suggest drawing out a numberline with a few points and finding the minimum absolute error to prove that it will be the median.&lt;/p&gt;
+
+&lt;p&gt;check out &lt;a href=&quot;https://stats.stackexchange.com/questions/34613/l1-regression-estimates-median-whereas-l2-regression-estimates-mean&quot;&gt;this stack exchage answer&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h3 id=&quot;structural-assumptions&quot;&gt;&lt;a id=&quot;structural_assumptions&quot;&gt;&lt;/a&gt;Structural Assumptions&lt;/h3&gt;
+&lt;p&gt;Structural assumptions assumptions made about the global relationship between all x and y. For Example, linear relationship.&lt;/p&gt;
+
+&lt;p&gt;We make these assumptions to decrease the amount of data, as you won’t need to use the data to determine what the structure is.&lt;/p&gt;
+
+&lt;p&gt;Another reason we make these assumptions, is that our prediction could be more accurate if our assumptions are correct. We will see this later in Chapter 2.5 (Figure 2.7, 2.8)&lt;/p&gt;
+
+&lt;h3 id=&quot;voronoi-tessellationvoronoi-diagrams&quot;&gt;&lt;a id=&quot;voronoi_tessellation&quot;&gt;&lt;/a&gt;Voronoi Tessellation/Voronoi Diagrams&lt;/h3&gt;
+&lt;p&gt;There are the splitting of space into different regions, based on distance to the closest point. This is similar to a decision boundary for each point in kNN. &lt;a href=&quot;https://en.wikipedia.org/wiki/Voronoi_diagram&quot;&gt;Seeing a picture&lt;/a&gt; would help.&lt;/p&gt;
+
+&lt;h3 id=&quot;minimizing-pointwise&quot;&gt;&lt;a id=&quot;minimizing_pointwise&quot;&gt;&lt;/a&gt;Minimizing &lt;em&gt;pointwise&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;Minimizing pointwise means minimizing, given the samples that we have, as opposed to the whole $X$ distribution (which we don’t have). So basically, just minimizing over our training set. The effect that this would have on the equations is $X$ becomes $X=x$ where we give it the training set of x.&lt;/p&gt;
+
+&lt;h3 id=&quot;robustness&quot;&gt;&lt;a id=&quot;robust&quot;&gt;&lt;/a&gt;Robustness&lt;/h3&gt;
+&lt;p&gt;For a model to be “robust” in this case means, how much an outlier can affect your model. We would want to know this as if a single data point can heavily influence our model, we would either need to introduce more datapoints, or do more work to ensure the data is cleaned.&lt;/p&gt;
+
+&lt;h3 id=&quot;curse-of-dimensionality&quot;&gt;&lt;a id=&quot;curse_of_dimensionality&quot;&gt;&lt;/a&gt;Curse Of Dimensionality&lt;/h3&gt;
+&lt;p&gt;The amount of data that we need increases exponentially as the amount of dimensions in the input. As the dimensionality increases, the amount of space that the model has to adjust to increases. Why would we want to increase the dimensionality? Remember that we can see the dimensionality as being more features that we can define our output with, thus, if our training set sufficiently represents the true distribution, we could possibly have features that would decrease the error/uncertainty in our output. (Possibly, since the features might be orthogonal to the output.)&lt;/p&gt;</content><author><name></name></author><summary type="html">Reference for ESLII Chapter 2 Here is the reference for chapter which includes explanations, and definitions for chapter 2 of The Elements of Statistical Learning.</summary></entry></feed>
