@@ -8,7 +8,7 @@ permalink: /about/
 
 I am a **final year Mechatronics Engineering** student at McMaster University. At McMaster, Mechatronics is mostly on the software side. We focus on **embedded software** and HDLs. I've also done mechanical work in **robotics**, mechanical vibrations, and dynamics. In terms of the electrical side, along with HDLs (Verilog) we have worked with electrical instrumentation and electricity and magnetism. This year, I am excited to be taking courses in parallel computing and computer networks!
 
-Personally, I have a strong interest in **Machine learning**. Ever since attending NeurIPS 2018, I have been interested in the unsupervised learning of disentangled representations. Though I have focused on unsupervised methods currently [this paper](https://arxiv.org/pdf/1812.02230.pdf), it is mentioned that we should move from a passive learning style to an active one. I believe that finding proper representations
+Personally, I have a strong interest in **Machine learning**. Ever since attending NeurIPS 2018, I have been interested in the **unsupervised learning of disentangled representations**. Though I have focused on unsupervised methods currently [this paper](https://arxiv.org/pdf/1812.02230.pdf), it is mentioned that we should move from a passive learning style to an active one. I believe that finding proper representations
 of your data is what will lead to efficient and scalable
 [continual learning](https://papers.nips.cc/paper/8193-life-long-disentangled-representation-learning-with-cross-domain-latent-homologies.pdf), hierarchical learning, and interpretability.
 
