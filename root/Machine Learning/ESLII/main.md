@@ -10,7 +10,7 @@ _I am not aiming to replace the book. This is just to compliment reading of the 
 
 I assume basic knowledge in statistics, calculus and linear algebra. There are good mathematical resources for these online, and I will post them. 
 ## Building Blocks:
-To get a good intuitive foundation of Linear algebra, I highly recomment [3blue1brown's Essence of Linear Algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) series whenever an operation in a proof seems unintuitive. Though I will try to explain the proofs myself, 3blue1brown's geometric interpretations of Lin Alg is what inspires my own though process. 
+To get a good intuitive foundation of Linear algebra, I highly recommend [3blue1brown's Essence of Linear Algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) series whenever an operation in a proof seems unintuitive. Though I will try to explain the proofs myself, 3blue1brown's geometric interpretations of Lin Alg is what inspires my own though process. 
 
 ## Content:
 I hope that you will enjoy, and if there is anything that you disagree with, want to give your own insights to, or if there are things that you believe are important that I didn't address, please let me know! There are may subtleties in the wording that contain many insights, and I'm sure that there are ones that I didn't catch.
