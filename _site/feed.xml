@@ -1,4 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-17T00:19:18-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-30T18:58:46-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yukun Chen</title><subtitle>Welcome! I'll be posting explanations of projects, and various notes that I find useful and interesting!</subtitle><entry><title type="html">MONet</title><link href="http://localhost:4000/article/2020/04/11/Paper_Review.html" rel="alternate" type="text/html" title="MONet" /><published>2020-04-11T00:00:00-04:00</published><updated>2020-04-11T00:00:00-04:00</updated><id>http://localhost:4000/article/2020/04/11/Paper_Review</id><content type="html" xml:base="http://localhost:4000/article/2020/04/11/Paper_Review.html">&lt;p&gt;Identify Article&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;motivation
+    &lt;ul&gt;
+      &lt;li&gt;object decomposition helps with downstream tasks
+        &lt;ul&gt;
+          &lt;li&gt;graph-structured networks
+            &lt;ul&gt;
+              &lt;li&gt;reinforcement learning&lt;/li&gt;
+              &lt;li&gt;physical modeling&lt;/li&gt;
+              &lt;li&gt;multiagent control&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;purpose
+    &lt;ul&gt;
+      &lt;li&gt;object decomposition
+        &lt;ul&gt;
+          &lt;li&gt;unsupervised identification of objects&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;same representation space for all objects&lt;/li&gt;
+      &lt;li&gt;infer objects with occlusion&lt;/li&gt;
+      &lt;li&gt;varying objects in scene&lt;/li&gt;
+      &lt;li&gt;generalizable to:
+        &lt;ul&gt;
+          &lt;li&gt;number of objects&lt;/li&gt;
+          &lt;li&gt;novel combintions of factors of variation (FOV)&lt;/li&gt;
+          &lt;li&gt;objects that apear frequently together&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;contributions
+    &lt;ul&gt;
+      &lt;li&gt;disentanglement of multiple objects&lt;/li&gt;
+      &lt;li&gt;unsuperivised generative model&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;advantages
+    &lt;ul&gt;
+      &lt;li&gt;current object segementation techniques don’t learn object representations&lt;/li&gt;
+      &lt;li&gt;GQNs can render 3D scenes, but they require multiple viewpoints&lt;/li&gt;
+      &lt;li&gt;disentanglement only works with one object&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;disadvantages&lt;/li&gt;
+  &lt;li&gt;method
+    &lt;ul&gt;
+      &lt;li&gt;attention network generates a mask, which the component vae makes predictions based on.&lt;/li&gt;
+      &lt;li&gt;latents are created based on the mask&lt;/li&gt;
+      &lt;li&gt;reconstruction loss of inputs is unconstrained in masked regions&lt;/li&gt;
+      &lt;li&gt;each mask will represent a different component&lt;/li&gt;
+      &lt;li&gt;VAE required to model the masks
+        &lt;ul&gt;
+          &lt;li&gt;probability of specific component given set of masks&lt;/li&gt;
+          &lt;li&gt;specific components are modeled given the latents&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;use rnn to track parts that have not been attributed to a component yet&lt;/li&gt;
+      &lt;li&gt;model is trained using normal Beta-VAE loss, with an extra loss term to distinguish between masking components.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Identify Article motivation object decomposition helps with downstream tasks graph-structured networks reinforcement learning physical modeling multiagent control purpose object decomposition unsupervised identification of objects same representation space for all objects infer objects with occlusion varying objects in scene generalizable to: number of objects novel combintions of factors of variation (FOV) objects that apear frequently together</summary></entry><entry><title type="html">Introspective Variational Autoencoder</title><link href="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html" rel="alternate" type="text/html" title="Introspective Variational Autoencoder" /><published>2019-06-23T00:00:00-04:00</published><updated>2019-06-23T00:00:00-04:00</updated><id>http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder</id><content type="html" xml:base="http://localhost:4000/project/2019/06/23/Introspective-Variational-Autoencoder.html">&lt;h1 id=&quot;introvae&quot;&gt;IntroVAE&lt;/h1&gt;
 &lt;p&gt;Improving quality of generated images through an introspective manner. Combines the high quality generations of GANs while maintaining a latent representation of the images. Please see below for my analysis!&lt;/p&gt;
 
 &lt;h2 id=&quot;about-this-project&quot;&gt;About this Project&lt;/h2&gt;
